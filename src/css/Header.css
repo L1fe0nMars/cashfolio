@@ -1,8 +1,17 @@
 /* Mobile - 360px */
 @media only screen and (min-width: 0em) {
-    .app {
-        min-height: 100vh;
-        text-align: center;
+    .heading {
+        padding: 0.5em 1em;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .date-period {
+        padding: 0.5em 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
     }
 }
 
