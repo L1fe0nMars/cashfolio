@@ -9,9 +9,11 @@ const Transaction = ({ transaction }) => {
 
     return (
         <li className="transaction">
-            {transaction.name}
-            {transaction.desc}
-            <span>{data.currency}{transaction.amount.toFixed(2)}</span>
+            <div className="transaction-info">
+                <span className="name">{transaction.name}</span>
+                <span className="desc">{transaction.desc}</span>
+            </div>
+            <span className={`amount ${transaction.type}`}>{data.currency}{transaction.amount.toFixed(2)}</span>
         </li>
     );
 }

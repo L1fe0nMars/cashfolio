@@ -1,35 +1,10 @@
 /* Mobile - 360px */
 @media only screen and (min-width: 0em) {
-    .transaction {
-        margin: 0.5em auto;
+    .app-header {
         padding: 0.5em 1em;
-        background-color: #d8d8d8;
-        border-radius: 10px;
         display: flex;
         align-items: center;
         justify-content: space-between;
-    }
-
-    .transaction-info {
-        display: flex;
-        flex-direction: column;
-        text-align: left;
-    }
-
-    .name {
-        font-weight: 700;
-    }
-
-    .amount {
-        font-weight: 600;
-    }
-
-    .income {
-        color: green;
-    }
-
-    .expense {
-        color: red;
     }
 }
 

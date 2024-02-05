@@ -1,14 +1,14 @@
 import { SaveDataProvider } from './context/SaveDataContext';
-import Header from './components/Header';
-import TransactionList from './components/TransactionList';
+import AppHeader from './components/AppHeader';
+import TransactionHome from './components/TransactionHome';
 import './css/App.css';
 
 const App = () => {
     return (
         <div className="app">
             <SaveDataProvider>
-                <Header />
-                <TransactionList />
+                <AppHeader />
+                <TransactionHome />
             </SaveDataProvider>
         </div>
     );

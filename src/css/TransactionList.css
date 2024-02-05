@@ -1,6 +1,38 @@
 /* Mobile - 360px */
 @media only screen and (min-width: 0em) {
-    
+    .transaction-list {
+        padding: 1em;
+    }
+
+    .date-period {
+        padding: 0.5em 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+    }
+
+    .transaction-options {
+        margin: 1em auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .dropdown select {
+        border: none;
+        background-color: inherit;
+        font-size: 1.5em;
+        font-family: inherit;
+        font-weight: 700;
+    }
+
+    .dropdown select::after {
+        font-size: 1.5em;
+    }
+
+    .transaction-list ul {
+        list-style-type: none;
+    }
 }
 
 /* Tablet - 700px */

@@ -3,9 +3,9 @@ import SaveDataReducer from './SaveDataReducer';
 
 const initialData = {
     transactions: [
-        {id: 0, type: 'I', name: 'ebay', desc: 'Money from ebay sale', date: '', amount: 13.5, categories: ['Sales']},
-        {id: 1, type: 'E', name: 'Karate', desc: 'Karate payment', date: '', amount: 129, categories: ['Subscription', 'Recurring']},
-        {id: 2, type: 'I', name: 'Y', desc: 'Paycheck', date: '', amount: 113.81, categories: ['Paycheck']},
+        {id: 0, type: 'income', name: 'ebay', desc: 'Money from ebay sale', date: '2024-1-26', amount: 13.5, categories: ['Sales']},
+        {id: 1, type: 'expense', name: 'Karate', desc: 'Karate payment', date: '2024-2-5', amount: 129, categories: ['Subscription', 'Recurring']},
+        {id: 2, type: 'income', name: 'Y', desc: 'Paycheck', date: '2024-1-19', amount: 113.81, categories: ['Paycheck']},
     ],
     darkMode: false,
     currency: '$',
