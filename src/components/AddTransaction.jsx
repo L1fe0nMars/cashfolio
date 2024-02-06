@@ -41,7 +41,7 @@ const AddTransaction = () => {
                 </div>
                 <div className="form-desc">
                     <label htmlFor="desc">Description</label>
-                    <input type="text" value={desc} onChange={(event) => setDesc(event.target.value)} placeholder="Enter description..." />
+                    <input type="text" value={desc} onChange={(event) => setDesc(event.target.value)} placeholder="Description" />
                 </div>
                 <div className="form-date">
                     <label htmlFor="date">Date</label>
@@ -49,7 +49,7 @@ const AddTransaction = () => {
                 </div>
                 <div className="form-amount">
                     <label htmlFor="amount">Amount</label>
-                    <input type="number" value={amount} onChange={(event) => setAmount(event.target.value)} placeholder="Enter amount..." required />
+                    <input type="number" value={amount} onChange={(event) => setAmount(event.target.value)} placeholder="Amount" required />
                 </div>
                 
             </form>

@@ -2,6 +2,9 @@
 @media only screen and (min-width: 0em) {
     .transaction-list {
         padding: 1em;
+        padding-top: 0.25em;
+        background-color: var(--off-white);
+        border-radius: 20px;
     }
 
     .date-period {
@@ -19,15 +22,30 @@
     }
 
     .dropdown select {
+        padding-right: 1em;
         border: none;
         background-color: inherit;
-        font-size: 1.5em;
+        font-size: 1.75em;
         font-family: inherit;
         font-weight: 700;
+        background: url(../assets/images/arrow-down.svg) no-repeat right;
+        appearance: none;
+        -moz-appearance: none;
+        -webkit-appearance: none;
     }
 
-    .dropdown select::after {
-        font-size: 1.5em;
+    .add-transaction-btn {
+        width: 2em;
+        height: 2em;
+        border-radius: 50%;
+        background-color: var(--primary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .add-transaction-btn svg {
+        fill: var(--off-white);
     }
 
     .transaction-list ul {

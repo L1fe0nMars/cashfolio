@@ -12,6 +12,7 @@ const Transaction = ({ transaction }) => {
             <div className="transaction-info">
                 <span className="name">{transaction.name}</span>
                 <span className="desc">{transaction.desc}</span>
+                <span className="date">{transaction.date}</span>
             </div>
             <span className={`amount ${transaction.type}`}>{data.currency}{transaction.amount.toFixed(2)}</span>
         </li>

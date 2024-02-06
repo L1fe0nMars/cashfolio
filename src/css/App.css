@@ -3,6 +3,9 @@
     .app {
         min-height: 100vh;
         text-align: center;
+        background: url(../assets/images/bg-blue.svg);
+        background-size: cover;
+        background-repeat: no-repeat;
     }
 }
 

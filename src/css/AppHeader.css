@@ -6,6 +6,14 @@
         align-items: center;
         justify-content: space-between;
     }
+
+    .app-header h1 {
+        color: var(--off-white);
+    }
+
+    .app-header svg {
+        fill: var(--off-white);
+    }
 }
 
 /* Tablet - 700px */

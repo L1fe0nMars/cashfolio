@@ -1,9 +1,9 @@
 /* Mobile - 360px */
 @media only screen and (min-width: 0em) {
     .transaction {
-        margin: 0.5em auto;
+        margin: 1.25em auto;
         padding: 0.5em 1em;
-        background-color: #d8d8d8;
+        background-color: white;
         border-radius: 10px;
         display: flex;
         align-items: center;
@@ -14,22 +14,21 @@
         display: flex;
         flex-direction: column;
         text-align: left;
+        gap: 0.25em;
     }
 
     .name {
-        font-weight: 700;
+        font-weight: 600;
+        font-size: 1.25em;
+    }
+
+    .date {
+        color: #adadad;
     }
 
     .amount {
         font-weight: 600;
-    }
-
-    .income {
-        color: green;
-    }
-
-    .expense {
-        color: red;
+        font-size: 1.2em;
     }
 }
 

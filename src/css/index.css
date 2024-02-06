@@ -6,7 +6,11 @@
     
         --off-white: #f5f5f5;
         --dark-mode: #1c1c1c;
-        
+        --primary: #2236a8;
+        --income: #0ba549;
+        --income-light: #ebffeb;
+        --expense: #ec230c;
+        --expense-light: #ffeaea;
     }
     
     /* inter-regular - latin */
@@ -73,6 +77,14 @@
     
     h1 {
         font-weight: 700;
+    }
+
+    .income {
+        color: var(--income);
+    }
+
+    .expense {
+        color: var(--expense);
     }
 }
 
