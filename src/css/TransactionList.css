@@ -29,6 +29,7 @@
         font-family: inherit;
         font-weight: 700;
         background: url(../assets/images/arrow-down.svg) no-repeat right;
+        cursor: pointer;
         appearance: none;
         -moz-appearance: none;
         -webkit-appearance: none;

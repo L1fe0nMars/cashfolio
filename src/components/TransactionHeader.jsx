@@ -7,7 +7,7 @@ const TransactionHeader = () => {
 
     const total = data.transactions.reduce((total, transaction) => {
         return transaction.type === 'income' ? total + transaction.amount : total - transaction.amount;
-    }, 0).toFixed(2);
+    }, 0);
 
     const incomeTotal = data.transactions
         .filter(transaction => transaction.type === 'income')
@@ -27,7 +27,7 @@ const TransactionHeader = () => {
         <div className="transaction-header">
             <h2>Total</h2>
             <span className={total > 0 ? 'income' : 'expense'}>
-                {`${sign}${data.currency}${Math.abs(total)}`}
+                {`${sign}${data.currency}${Math.abs(total).toFixed(2)}`}
             </span>
             <div className="income-expense">
                 <div className="income-total">

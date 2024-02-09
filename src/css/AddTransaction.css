@@ -1,6 +1,67 @@
 /* Mobile - 360px */
 @media only screen and (min-width: 0em) {
-    
+    #new-transaction-form {
+        margin: 1em auto;
+    }
+
+    .form-section {
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form-section input,
+    textarea {
+        width: 20em;
+        font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+        font-weight: 400;
+    }
+
+    .form-type {
+        border: 2px solid #cccccc;
+        border-radius: 10px;
+        width: max-content;
+    }
+
+    .form-type input[type="radio"] {
+        display: none;
+    }
+
+    .form-type label {
+        padding: 0.5em 2em;
+        display: inline-block;
+        background-color: var(--off-white);
+        border-radius: inherit;
+        cursor: pointer;
+    }
+
+    .form-type input[type="radio"]:checked + label {
+        background-color: #cccccc;
+    }
+
+    .form-btns {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1em;
+    }
+
+    .submit-btn {
+        padding: 0.5em 2em;
+        background-color: var(--primary);
+        color: var(--off-white);
+        border: 2px solid var(--primary);
+        border-radius: 20px;
+        font-weight: 500;
+    }
+
+    .cancel-transaction {
+        padding: 0.5em 2em;
+        color: var(--expense);
+        border: 2px solid var(--expense);
+        border-radius: 20px;
+        font-weight: 500;
+    }
 }
 
 /* Tablet - 700px */

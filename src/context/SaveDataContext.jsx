@@ -3,12 +3,14 @@ import SaveDataReducer from './SaveDataReducer';
 
 const initialData = {
     transactions: [
-        {id: 0, type: 'income', name: 'ebay', desc: 'Money from ebay sale', date: '2024-1-26', amount: 13.5, categories: ['Sales']},
-        {id: 1, type: 'expense', name: 'Karate', desc: 'Karate payment', date: '2024-2-5', amount: 129, categories: ['Subscription', 'Recurring']},
-        {id: 2, type: 'income', name: 'Y', desc: 'Paycheck', date: '2024-1-19', amount: 113.81, categories: ['Paycheck']},
+        {id: 0, type: 'income', name: 'ebay', desc: 'Money from ebay sale on this day in history of today', date: '2024-1-26', amount: 13.5, category: 'Sales'},
+        {id: 1, type: 'expense', name: 'Karate', desc: 'Karate payment', date: '2024-2-5', amount: 129, category: 'Subscription'},
+        {id: 2, type: 'income', name: 'Y', desc: 'Paycheck', date: '2024-1-19', amount: 113.81, category: 'Paycheck'},
+        {id: 3, type: 'income', name: 'ebay', desc: '', date: '2024-2-6', amount: 24.59, category: ''},
     ],
     darkMode: false,
     currency: '$',
+    dateFormat: 'mm/dd'
 }
 
 export const SaveDataContext = createContext(initialData);

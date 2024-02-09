@@ -1,0 +1,11 @@
+import '../css/Footer.css';
+
+const Footer = () => {
+    return (
+        <footer>
+            <p>Designed and developed by <a href="https://l1fe0nmars.github.io/" target="_blank" rel="noopener noreferrer">Jamal Kamareddine</a></p>
+        </footer>
+    );
+}
+
+export default Footer;

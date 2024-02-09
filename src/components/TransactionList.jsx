@@ -1,6 +1,7 @@
 import { useState, useContext } from 'react';
 import { SaveDataContext } from '../context/SaveDataContext';
 import Transaction from './Transaction';
+import AddTransaction from './AddTransaction';
 import '../css/TransactionList.css';
 
 const TransactionList = () => {
@@ -12,6 +13,11 @@ const TransactionList = () => {
     
     const { data } = useContext(SaveDataContext);
     const [dropdownVal, setDropdownVal] = useState('all');
+    const [newTransaction, setNewTransaction] = useState(false);
+
+    const toggleNewTransaction = (display) => {
+        setNewTransaction(display);
+    }
 
     return (
         <div className="transaction-list">
@@ -40,25 +46,39 @@ const TransactionList = () => {
                     </select>
                 </form>
 
-                <button className="add-transaction-btn">
+                <button className="add-transaction-btn" onClick={() => toggleNewTransaction(true)} aria-label="Add transaction">
                     <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24" width="24" height="24">
                         <path d="M17,11H13V7a1,1,0,0,0-1-1h0a1,1,0,0,0-1,1v4H7a1,1,0,0,0-1,1H6a1,1,0,0,0,1,1h4v4a1,1,0,0,0,1,1h0a1,1,0,0,0,1-1V13h4a1,1,0,0,0,1-1h0A1,1,0,0,0,17,11Z"/>
                     </svg>
                 </button>
             </div>
 
-            <ul>
-                {
-                    dropdownVal === 'all'
-                    ? 
-                        data.transactions.map(transaction => (<Transaction key={transaction.id} transaction={transaction} />))
-                    :
-                        data.transactions
-                            .filter(transaction => transaction.type === dropdownVal)
-                            .map(transaction => (<Transaction key={transaction.id} transaction={transaction} />))
-                }
-                
-            </ul>
+            {newTransaction && <AddTransaction closeNewTransaction={() => toggleNewTransaction(false)} />}
+
+            {
+                data.transactions.length === 0
+                ? (
+                    <span>No transactions found</span>
+                )
+                : (
+                    <ul>
+                        {
+                            dropdownVal === 'all'
+                            ? 
+                                data.transactions
+                                    .sort((a, b) => {return new Date(b.date.replace(/-/g, '/')) - new Date(a.date.replace(/-/g, '/'))})
+                                    .map(transaction => (<Transaction key={transaction.id} transaction={transaction} />))
+                                    
+                            :
+                                data.transactions
+                                    .filter(transaction => transaction.type === dropdownVal)
+                                    .sort((a, b) => {return new Date(b.date.replace(/-/g, '/')) - new Date(a.date.replace(/-/g, '/'))})
+                                    .map(transaction => (<Transaction key={transaction.id} transaction={transaction} />))
+                        }
+                    </ul>
+                )
+            }
+            
         </div>
     );
 }

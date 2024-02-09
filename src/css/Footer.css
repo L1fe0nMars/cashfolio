@@ -1,18 +1,19 @@
 /* Mobile - 360px */
 @media only screen and (min-width: 0em) {
-    .app-header {
-        padding: 0.5em 1em 0 1em;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+    footer {
+        padding: 2em 1em;
     }
 
-    .app-header h1 {
+    footer p {
         color: var(--off-white);
     }
 
-    .app-header svg {
-        fill: var(--off-white);
+    footer a {
+        color: #00ebeb;
+    }
+
+    footer a:hover {
+        text-decoration: underline;
     }
 }
 
