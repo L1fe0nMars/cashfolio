@@ -1,17 +1,74 @@
 /* Mobile - 360px */
 @media only screen and (min-width: 0em) {
+    .transaction-home {
+        margin: 0 auto;
+        max-width: 50em;
+    }
+
+    .transaction-header {
+        margin: 2em auto;
+    }
+    
+    .transaction-header h2 {
+        font-size: 2em;
+        font-weight: 600;
+        color: var(--off-white);
+        margin-bottom: 0.25em;
+    }
+
+    .transaction-header span {
+        font-weight: 700;
+        font-size: 2.5em;
+    }
+
+    .income-expense {
+        margin: 2em auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 2em;
+    }
+
+    .income-total,
+    .expense-total {
+        padding: 1em;
+        min-width: 35%;
+        border-radius: 10px;
+    }
+
+    .income-total h2,
+    .expense-total h2 {
+        font-weight: 500;
+        font-size: 1.2em;
+    }
+
+    .income-total span,
+    .expense-total span {
+        font-size: 1.4em;
+    }
+
+    .income-total {
+        background-color: var(--income-light);
+    }
+
+    .income-total h2 {
+        color: var(--income);
+    }
+
+    .expense-total {
+        background-color: var(--expense-light);
+    }
+
+    .expense-total h2 {
+        color: var(--expense);
+    }
+    
     .transaction-list {
         padding: 1em;
         padding-top: 0.25em;
         background-color: var(--off-white);
         border-radius: 20px;
-    }
-
-    .date-period {
-        padding: 0.5em 0;
-        display: flex;
-        align-items: center;
-        justify-content: space-evenly;
     }
 
     .transaction-options {
@@ -21,7 +78,7 @@
         justify-content: space-between;
     }
 
-    .dropdown select {
+    select {
         padding-right: 1em;
         border: none;
         background-color: inherit;
@@ -33,6 +90,21 @@
         appearance: none;
         -moz-appearance: none;
         -webkit-appearance: none;
+    }
+    
+    .date-period {
+        width: max-content;
+    }
+
+    .date-period label {
+        font-weight: 700;
+        font-size: 1.3em;
+    }
+
+    .date-period select {
+        padding-right: 1.3em;
+        font-size: 1.3em;
+        font-weight: 400;
     }
 
     .add-transaction-btn {
@@ -47,6 +119,10 @@
 
     .add-transaction-btn svg {
         fill: var(--off-white);
+    }
+
+    .no-transactions {
+        padding: 1em 0;
     }
 
     .transaction-list ul {

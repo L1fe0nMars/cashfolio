@@ -1,6 +1,6 @@
 import { SaveDataProvider } from './context/SaveDataContext';
 import AppHeader from './components/AppHeader';
-import TransactionHome from './components/TransactionHome';
+import TransactionList from './components/TransactionList';
 import Footer from './components/Footer';
 import './css/App.css';
 
@@ -9,7 +9,7 @@ const App = () => {
         <div className="app">
             <SaveDataProvider>
                 <AppHeader />
-                <TransactionHome />
+                <TransactionList />
                 <Footer />
             </SaveDataProvider>
         </div>

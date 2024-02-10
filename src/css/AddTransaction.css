@@ -2,22 +2,32 @@
 @media only screen and (min-width: 0em) {
     #new-transaction-form {
         margin: 1em auto;
+        width: 17em;
     }
 
     .form-section {
+        margin: 1em auto;
         text-align: left;
         display: flex;
         flex-direction: column;
     }
 
+    .form-section label {
+        margin-bottom: 0.25em;
+    }
+
     .form-section input,
     textarea {
-        width: 20em;
+        padding: 0.25em;
+        border: 1px solid var(--dark-mode);
+        border-radius: 5px;
         font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
         font-weight: 400;
+        font-size: 1em;
     }
 
     .form-type {
+        margin: 0 auto;
         border: 2px solid #cccccc;
         border-radius: 10px;
         width: max-content;
@@ -28,10 +38,11 @@
     }
 
     .form-type label {
+        margin: 0.1em;
         padding: 0.5em 2em;
         display: inline-block;
         background-color: var(--off-white);
-        border-radius: inherit;
+        border-radius: 7px;
         cursor: pointer;
     }
 
@@ -40,6 +51,7 @@
     }
 
     .form-btns {
+        padding: 0.5em 0;
         display: flex;
         align-items: center;
         justify-content: center;

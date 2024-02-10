@@ -15,7 +15,7 @@ const AddTransaction = (props) => {
     const [type, setType] = useState('income');
     const [date, setDate] = useState(todaysDate);
     const [amount, setAmount] = useState('');
-    const { data, saveData, addTransaction } = useContext(SaveDataContext);
+    const { addTransaction } = useContext(SaveDataContext);
 
     const onSubmit = (event) => {
         event.preventDefault();
@@ -43,7 +43,6 @@ const AddTransaction = (props) => {
                     <input type="number" value={amount} onChange={(event) => setAmount(event.target.value)} placeholder="0.00" required />
                 </div>
                 <div className="form-type">
-                    
                     <input type="radio" id="radio1" value="income" onChange={(event) => setType(event.target.value)} checked={type === 'income'} />
                     <label htmlFor="radio1">Income</label>
                     <input type="radio" id="radio2" value="expense" onChange={(event) => setType(event.target.value)} checked={type === 'expense'} />
@@ -55,11 +54,11 @@ const AddTransaction = (props) => {
                 </div>
                 <div className="form-section">
                     <label htmlFor="name">Name</label>
-                    <input type="text" value={name} onChange={(event) => setName(event.target.value)} placeholder="Transaction" required />
+                    <input type="text" value={name} onChange={(event) => setName(event.target.value)} placeholder="Transaction name" required />
                 </div>
                 <div className="form-section">
                     <label htmlFor="desc">Description</label>
-                    <textarea id="message" name="desc" rows="2"></textarea>
+                    <textarea id="message" name="desc" rows="2" placeholder="Description" onChange={(event) => setDesc(event.target.value)}></textarea>
                 </div>
                 <div className="form-section">
                     <label htmlFor="category">Category</label>

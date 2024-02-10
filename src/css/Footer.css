@@ -8,6 +8,15 @@
         color: var(--off-white);
     }
 
+    #disclaimer {
+        margin-bottom: 1em;
+    }
+
+    #disclaimer span {
+        color: inherit;
+        font-weight: 700;
+    }
+
     footer a {
         color: #00ebeb;
     }
