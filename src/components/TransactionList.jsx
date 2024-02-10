@@ -2,6 +2,7 @@ import { useState, useContext } from 'react';
 import { SaveDataContext } from '../context/SaveDataContext';
 import Transaction from './Transaction';
 import AddTransaction from './AddTransaction';
+import DeleteAllTransactions from './DeleteAllTransactions';
 import '../css/TransactionList.css';
 
 const TransactionList = () => {
@@ -20,7 +21,7 @@ const TransactionList = () => {
             return transaction.type === 'income' ? total + transaction.amount : total - transaction.amount;
         }, 0);
 
-    const sign = total < 0 ? '-' : '';
+    const sign = total() < 0 ? '-' : '';
 
     const toggleNewTransaction = (display) => {
         setNewTransaction(display);
@@ -36,11 +37,11 @@ const TransactionList = () => {
                 <div className="income-expense">
                     <div className="income-total">
                         <h2>Income</h2>
-                        <span className='income'>{`${data.currency}${total('income')}`}</span>
+                        <span className="income">{`${data.currency}${total('income')}`}</span>
                     </div>
                     <div className="expense-total">
                         <h2>Expenses</h2>
-                        <span className='expense'>{`${data.currency}${total('expense')}`}</span>
+                        <span className="expense">{`${data.currency}${Math.abs(total('expense'))}`}</span>
                     </div>
                 </div>
             </div>
@@ -62,8 +63,6 @@ const TransactionList = () => {
                     </button>
                 </div>
 
-                {newTransaction && <AddTransaction closeNewTransaction={() => toggleNewTransaction(false)} />}
-
                 {
                     <form className="date-period">
                         <label>Month: </label>
@@ -81,6 +80,8 @@ const TransactionList = () => {
                         </select>
                     </form>
                 }
+
+                {newTransaction && <AddTransaction closeNewTransaction={() => toggleNewTransaction(false)} />}
 
                 {
                     data.transactions.length === 0
@@ -112,6 +113,8 @@ const TransactionList = () => {
                         </ul>
                     )
                 }
+
+                <DeleteAllTransactions />
             </div>
         </div>
     );

@@ -1,5 +1,9 @@
 /* Mobile - 360px */
 @media only screen and (min-width: 0em) {
+    .new-transaction {
+        margin-top: 1em;
+    }
+    
     #new-transaction-form {
         margin: 1em auto;
         width: 17em;
@@ -58,21 +62,21 @@
         gap: 1em;
     }
 
-    .submit-btn {
+    .form-btns button {
         padding: 0.5em 2em;
-        background-color: var(--primary);
-        color: var(--off-white);
-        border: 2px solid var(--primary);
         border-radius: 20px;
         font-weight: 500;
     }
 
+    .submit-btn {
+        background-color: var(--primary);
+        color: var(--off-white);
+        border: 2px solid var(--primary);
+    }
+
     .cancel-transaction {
-        padding: 0.5em 2em;
         color: var(--expense);
         border: 2px solid var(--expense);
-        border-radius: 20px;
-        font-weight: 500;
     }
 }
 
