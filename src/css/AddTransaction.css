@@ -1,7 +1,7 @@
 /* Mobile - 360px */
 @media only screen and (min-width: 0em) {
     .new-transaction {
-        margin-top: 1em;
+        margin-top: 2em;
     }
     
     #new-transaction-form {
@@ -18,16 +18,6 @@
 
     .form-section label {
         margin-bottom: 0.25em;
-    }
-
-    .form-section input,
-    textarea {
-        padding: 0.25em;
-        border: 1px solid var(--dark-mode);
-        border-radius: 5px;
-        font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-        font-weight: 400;
-        font-size: 1em;
     }
 
     .form-type {
@@ -78,19 +68,4 @@
         color: var(--expense);
         border: 2px solid var(--expense);
     }
-}
-
-/* Tablet - 700px */
-@media only screen and (min-width: 43.75em) {
-    
-}
-
-/* Small Desktop - 1024px */
-@media only screen and (min-width: 64em) {
-    
-}
-
-/* Large Desktop - 1300px */
-@media only screen and (min-width: 81.25em) {
-    
 }

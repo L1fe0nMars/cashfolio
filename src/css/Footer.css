@@ -25,18 +25,3 @@
         text-decoration: underline;
     }
 }
-
-/* Tablet - 700px */
-@media only screen and (min-width: 43.75em) {
-    
-}
-
-/* Small Desktop - 1024px */
-@media only screen and (min-width: 64em) {
-    
-}
-
-/* Large Desktop - 1300px */
-@media only screen and (min-width: 81.25em) {
-    
-}

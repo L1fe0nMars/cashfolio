@@ -121,26 +121,29 @@
         fill: var(--off-white);
     }
 
+    .filter-options {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .search {
+        display: flex;
+        align-items: center;
+        gap: 0.5em;
+    }
+
+    .search input {
+        width: 5em;
+    }
+
     .no-transactions {
-        padding: 2em 0 1em 0;
+        padding: 3em 0 2em 0;
+        font-weight: 500;
     }
 
     .transaction-list ul {
+        padding: 1em 0;
         list-style-type: none;
     }
-}
-
-/* Tablet - 700px */
-@media only screen and (min-width: 43.75em) {
-    
-}
-
-/* Small Desktop - 1024px */
-@media only screen and (min-width: 64em) {
-    
-}
-
-/* Large Desktop - 1300px */
-@media only screen and (min-width: 81.25em) {
-    
 }

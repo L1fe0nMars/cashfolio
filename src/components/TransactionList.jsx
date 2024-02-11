@@ -12,10 +12,12 @@ const TransactionList = () => {
     const { data } = useContext(SaveDataContext);
     const [dropdownVal, setDropdownVal] = useState('all');
     const [dropdownMonth, setDropdownMonth] = useState('');
+    const [searchTerm, setSearchTerm] = useState('');
     const [newTransaction, setNewTransaction] = useState(false);
 
     const total = (type = '') => data.transactions
         .filter(transaction => transaction.type.includes(type))
+        .filter(transaction => transaction.name.toLowerCase().includes(searchTerm) || transaction.desc.toLowerCase().includes(searchTerm))
         .filter(transaction => transaction.date.includes(`2024-${dropdownMonth}`))
         .reduce((total, transaction) => {
             return transaction.type === 'income' ? total + transaction.amount : total - transaction.amount;
@@ -63,28 +65,38 @@ const TransactionList = () => {
                     </button>
                 </div>
 
-                {
-                    <form className="date-period">
-                        <label>Month: </label>
-                        <select value={dropdownMonth} onChange={(event) => setDropdownMonth(event.target.value)}>
-                            <option value="">Any</option>
-                            {
-                                Array.from({ length: 12 }, (_, index) => {
-                                    const month = String(index).padStart(2, '0');
-                                    const monthName = new Date(`${year}-${month}-12`).toLocaleString('en-US', { month: 'long' });
-                                    const hasTransactions = data.transactions.filter(transaction => transaction.date.includes(`${year}-${month}`)).length > 0;
-                                    
-                                    return hasTransactions && <option key={month} value={month}>{monthName}</option>;
-                                })
-                            }
-                        </select>
-                    </form>
-                }
+                <div className="filter-options">
+                    {
+                        <form className="date-period">
+                            <label>Month: </label>
+                            <select value={dropdownMonth} onChange={(event) => setDropdownMonth(event.target.value)}>
+                                <option value="">Any</option>
+                                {
+                                    Array.from({ length: 12 }, (_, index) => {
+                                        const month = String(index).padStart(2, '0');
+                                        const monthName = new Date(`${year}-${month}-12`).toLocaleString('en-US', { month: 'long' });
+                                        const hasTransactions = data.transactions.filter(transaction => transaction.date.includes(`${year}-${month}`)).length > 0;
+                                        
+                                        return hasTransactions && <option key={month} value={month}>{monthName}</option>;
+                                    })
+                                }
+                            </select>
+                        </form>
+                    }
+
+                    <div className="search">
+                        <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24" width="24" height="24">
+                            <path d="M23.707,22.293l-5.969-5.969a10.016,10.016,0,1,0-1.414,1.414l5.969,5.969a1,1,0,0,0,1.414-1.414ZM10,18a8,8,0,1,1,8-8A8.009,8.009,0,0,1,10,18Z"/>
+                        </svg>
+                        <input value={searchTerm} onChange={(event) => setSearchTerm(event.target.value.toLowerCase())} placeholder="Search" />
+                    </div>
+                </div>
 
                 {newTransaction && <AddTransaction closeNewTransaction={() => toggleNewTransaction(false)} />}
 
                 {
                     data.transactions.length === 0
+                    || data.transactions.filter(transaction => transaction.name.toLowerCase().includes(searchTerm) || transaction.desc.toLowerCase().includes(searchTerm)).length === 0
                     ? (
                         <p className="no-transactions">No transactions found</p>
                     )
@@ -95,17 +107,19 @@ const TransactionList = () => {
                                 ? 
                                     data.transactions
                                         .sort((a, b) => {return new Date(b.date.replace(/-/g, '/')) - new Date(a.date.replace(/-/g, '/'))})
+                                        .filter(transaction => transaction.name.toLowerCase().includes(searchTerm) || transaction.desc.toLowerCase().includes(searchTerm))
                                         .filter(transaction => transaction.date.includes(`2024-${dropdownMonth}`))
                                         .map(transaction => (<Transaction key={transaction.id} transaction={transaction} />))
                                         
                                 :
                                     data.transactions.filter(transaction => transaction.type === dropdownVal).length === 0
                                     ? (
-                                        <p className="no-transactions">No transactions found</p>
+                                        <li className="no-transactions">No transactions found</li>
                                     )
                                     :
                                         data.transactions
                                             .filter(transaction => transaction.type === dropdownVal)
+                                            .filter(transaction => transaction.name.toLowerCase().includes(searchTerm) || transaction.desc.toLowerCase().includes(searchTerm))
                                             .filter(transaction => transaction.date.includes(`2024-${dropdownMonth}`))
                                             .sort((a, b) => {return new Date(b.date.replace(/-/g, '/')) - new Date(a.date.replace(/-/g, '/'))})
                                             .map(transaction => (<Transaction key={transaction.id} transaction={transaction} />))
