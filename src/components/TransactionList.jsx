@@ -39,11 +39,11 @@ const TransactionList = () => {
                 <div className="income-expense">
                     <div className="income-total">
                         <h2>Income</h2>
-                        <span className="income">{`${data.currency}${total('income')}`}</span>
+                        <span className="income">{`${data.currency}${total('income').toFixed(2)}`}</span>
                     </div>
                     <div className="expense-total">
                         <h2>Expenses</h2>
-                        <span className="expense">{`${data.currency}${Math.abs(total('expense'))}`}</span>
+                        <span className="expense">{`${data.currency}${Math.abs(total('expense')).toFixed(2)}`}</span>
                     </div>
                 </div>
             </div>
