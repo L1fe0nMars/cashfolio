@@ -48,14 +48,23 @@
         color: var(--text-light);
     }
 
+    .edit-transaction,
     .delete-transaction {
         margin-left: 1em;
         padding: 0.5em;
         border-radius: inherit;
-        background-color: var(--expense);
     }
 
+    .edit-transaction svg,
     .delete-transaction svg {
         fill: var(--off-white);
+    }
+
+    .edit-transaction {
+        background-color: var(--primary);
+    }
+
+    .delete-transaction {
+        background-color: var(--expense);
     }
 }

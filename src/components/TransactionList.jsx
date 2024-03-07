@@ -15,12 +15,27 @@ const TransactionList = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [newTransaction, setNewTransaction] = useState(false);
 
-    const total = (type = '') => data.transactions
-        .filter(transaction => transaction.type.includes(type))
-        .filter(transaction => transaction.name.toLowerCase().includes(searchTerm) 
-            || transaction.desc.toLowerCase().includes(searchTerm)
-            || transaction.category.toLowerCase().includes(searchTerm))
-        .filter(transaction => transaction.date.includes(`2024-${dropdownMonth}`))
+    const filterTransactions = (filters) => {
+        let transactions = data.transactions.sort((a, b) => {return new Date(b.date.replace(/-/g, '/')) - new Date(a.date.replace(/-/g, '/'))});
+
+        for (const filter of filters) {
+            if (filter === 'income' || filter === 'expense') {
+                transactions = transactions.filter(transaction => transaction.type === filter);
+            }
+            else if (filter === 'date') {
+                transactions = transactions.filter(transaction => transaction.date.includes(`2024-${dropdownMonth}`));
+            }
+            else if (filter === 'search') {
+                transactions = transactions.filter(transaction => transaction.name.toLowerCase().includes(searchTerm) 
+                    || transaction.desc.toLowerCase().includes(searchTerm)
+                    || transaction.category.toLowerCase().includes(searchTerm));
+            }
+        }
+        
+        return transactions;
+    }
+    
+    const total = (type = '') => filterTransactions([type, 'date', 'search'])
         .reduce((total, transaction) => {
             return transaction.type === 'income' ? total + transaction.amount : total - transaction.amount;
         }, 0);
@@ -96,45 +111,26 @@ const TransactionList = () => {
 
                 {newTransaction && <AddTransaction closeNewTransaction={() => toggleNewTransaction(false)} />}
 
-                {
-                    data.transactions.length === 0
-                    || data.transactions.filter(transaction => transaction.name.toLowerCase().includes(searchTerm) 
-                        || transaction.desc.toLowerCase().includes(searchTerm)
-                        || transaction.category.toLowerCase().includes(searchTerm)).length === 0
-                    ? (
-                        <p className="no-transactions">No transactions found</p>
-                    )
-                    : (
-                        <ul>
-                            {
-                                dropdownVal === 'all'
-                                ? 
-                                    data.transactions
-                                        .sort((a, b) => {return new Date(b.date.replace(/-/g, '/')) - new Date(a.date.replace(/-/g, '/'))})
-                                        .filter(transaction => transaction.name.toLowerCase().includes(searchTerm) 
-                                            || transaction.desc.toLowerCase().includes(searchTerm)
-                                            || transaction.category.toLowerCase().includes(searchTerm))
-                                        .filter(transaction => transaction.date.includes(`2024-${dropdownMonth}`))
-                                        .map(transaction => (<Transaction key={transaction.id} transaction={transaction} />))
-                                        
+                <ul>
+                    {
+                        data.transactions.length === 0 || filterTransactions(['search']).length === 0
+                        ? (
+                            <li className="no-transactions">No transactions found</li>
+                        )
+                        : (
+                            dropdownVal === 'all'
+                            ? 
+                                filterTransactions(['date', 'search']).map(transaction => (<Transaction key={transaction.id} transaction={transaction} />))     
+                            :
+                                filterTransactions([dropdownVal, 'date', 'search']).length === 0
+                                ? (
+                                    <li className="no-transactions">No transactions found</li>
+                                )
                                 :
-                                    data.transactions.filter(transaction => transaction.type === dropdownVal).length === 0
-                                    ? (
-                                        <li className="no-transactions">No transactions found</li>
-                                    )
-                                    :
-                                        data.transactions
-                                            .filter(transaction => transaction.type === dropdownVal)
-                                            .filter(transaction => transaction.name.toLowerCase().includes(searchTerm)
-                                                || transaction.desc.toLowerCase().includes(searchTerm)
-                                                || transaction.category.toLowerCase().includes(searchTerm))
-                                            .filter(transaction => transaction.date.includes(`2024-${dropdownMonth}`))
-                                            .sort((a, b) => {return new Date(b.date.replace(/-/g, '/')) - new Date(a.date.replace(/-/g, '/'))})
-                                            .map(transaction => (<Transaction key={transaction.id} transaction={transaction} />))
-                            }
-                        </ul>
-                    )
-                }
+                                    filterTransactions([dropdownVal, 'date', 'search']).map(transaction => (<Transaction key={transaction.id} transaction={transaction} />))
+                        )
+                    }
+                </ul>
 
                 <DeleteAllTransactions />
             </div>

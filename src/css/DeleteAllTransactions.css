@@ -3,6 +3,7 @@
     .delete-all-btn {
         margin: 1em auto;
         padding: 0.5em 2em;
+        border: 2px solid var(--expense);
         border-radius: 20px;
         color: var(--off-white);
         background-color: var(--expense);

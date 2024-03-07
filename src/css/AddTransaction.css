@@ -1,7 +1,7 @@
 /* Mobile - 360px */
 @media only screen and (min-width: 0em) {
     .new-transaction {
-        margin-top: 2em;
+        margin: 2em auto;
     }
     
     #new-transaction-form {
@@ -35,7 +35,7 @@
         margin: 0.1em;
         padding: 0.5em 2em;
         display: inline-block;
-        background-color: var(--off-white);
+        background-color: inherit;
         border-radius: 7px;
         cursor: pointer;
     }
