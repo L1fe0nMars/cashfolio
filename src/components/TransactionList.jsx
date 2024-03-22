@@ -26,7 +26,7 @@ const TransactionList = () => {
                 transactions = transactions.filter(transaction => transaction.date.includes(`2024-${dropdownMonth}`));
             }
             else if (filter === 'search') {
-                transactions = transactions.filter(transaction => transaction.name.toLowerCase().includes(searchTerm) 
+                transactions = transactions.filter(transaction => transaction.name.toLowerCase().includes(searchTerm)
                     || transaction.desc.toLowerCase().includes(searchTerm)
                     || transaction.category.toLowerCase().includes(searchTerm));
             }
@@ -38,7 +38,8 @@ const TransactionList = () => {
     const total = (type = '') => filterTransactions([type, 'date', 'search'])
         .reduce((total, transaction) => {
             return transaction.type === 'income' ? total + transaction.amount : total - transaction.amount;
-        }, 0);
+        }, 0)
+        .toFixed(2);
 
     const sign = total() < 0 ? '-' : '';
 
@@ -51,16 +52,16 @@ const TransactionList = () => {
             <div className="transaction-header">
                 <h2>Total</h2>
                 <span className={total() > 0 ? 'income' : 'expense'}>
-                    {`${sign}${data.currency}${Math.abs(total()).toFixed(2)}`}
+                    {`${sign}${data.currency}${Math.abs(total())}`}
                 </span>
                 <div className="income-expense">
                     <div className="income-total">
                         <h2>Income</h2>
-                        <span className="income">{`${data.currency}${total('income').toFixed(2)}`}</span>
+                        <span className="income">{`${data.currency}${total('income')}`}</span>
                     </div>
                     <div className="expense-total">
                         <h2>Expenses</h2>
-                        <span className="expense">{`${data.currency}${Math.abs(total('expense')).toFixed(2)}`}</span>
+                        <span className="expense">{`${data.currency}${Math.abs(total('expense'))}`}</span>
                     </div>
                 </div>
             </div>
