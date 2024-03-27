@@ -38,8 +38,7 @@ const TransactionList = () => {
     const total = (type = '') => filterTransactions([type, 'date', 'search'])
         .reduce((total, transaction) => {
             return transaction.type === 'income' ? total + transaction.amount : total - transaction.amount;
-        }, 0)
-        .toFixed(2);
+        }, 0); 
 
     const sign = total() < 0 ? '-' : '';
 
@@ -52,16 +51,16 @@ const TransactionList = () => {
             <div className="transaction-header">
                 <h2>Total</h2>
                 <span className={total() > 0 ? 'income' : 'expense'}>
-                    {`${sign}${data.currency}${Math.abs(total())}`}
+                    {`${sign}${data.currency}${Math.abs(total()).toFixed(2)}`}
                 </span>
                 <div className="income-expense">
                     <div className="income-total">
                         <h2>Income</h2>
-                        <span className="income">{`${data.currency}${total('income')}`}</span>
+                        <span className="income">{`${data.currency}${total('income').toFixed(2)}`}</span>
                     </div>
                     <div className="expense-total">
                         <h2>Expenses</h2>
-                        <span className="expense">{`${data.currency}${Math.abs(total('expense'))}`}</span>
+                        <span className="expense">{`${data.currency}${Math.abs(total('expense')).toFixed(2)}`}</span>
                     </div>
                 </div>
             </div>
