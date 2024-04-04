@@ -2,26 +2,26 @@ import { useState, useContext } from 'react';
 import { SaveDataContext } from '../context/SaveDataContext';
 import '../css/AddTransaction.css';
 
-const AddTransaction = (props) => {
+const AddTransaction = ({ transaction, update, closeNewTransaction }) => {
     const today = new Date();
     const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
     const formattedDate = today.toLocaleDateString('en-US', options);
     const [mm, dd, yyyy] = formattedDate.split('/');
     const todaysDate = `${yyyy}-${mm}-${dd}`;
     
-    const [name, setName] = useState(props.transaction?.name || '');
-    const [desc, setDesc] = useState(props.transaction?.desc || '');
-    const [category, setCategory] = useState(props.transaction?.category || '');
-    const [type, setType] = useState(props.transaction?.type || 'income');
-    const [date, setDate] = useState(props.transaction?.date || todaysDate);
-    const [amount, setAmount] = useState(props.transaction?.amount || '');
+    const [name, setName] = useState(transaction?.name || '');
+    const [desc, setDesc] = useState(transaction?.desc || '');
+    const [category, setCategory] = useState(transaction?.category || '');
+    const [type, setType] = useState(transaction?.type || 'income');
+    const [date, setDate] = useState(transaction?.date || todaysDate);
+    const [amount, setAmount] = useState(transaction?.amount || '');
     const { addTransaction, updateTransaction } = useContext(SaveDataContext);
 
     const onSubmit = (event) => {
         event.preventDefault();
 
         const newTransaction = {
-            id: props.transaction?.id || Math.floor(Math.random() * 100000000),
+            id: transaction?.id || Math.floor(Math.random() * 100000000),
             type,
             name,
             desc,
@@ -30,13 +30,13 @@ const AddTransaction = (props) => {
             category
         }
 
-        props.update ? updateTransaction(newTransaction) : addTransaction(newTransaction);
-        props.closeNewTransaction();
+        update ? updateTransaction(newTransaction) : addTransaction(newTransaction);
+        closeNewTransaction();
     }
 
     return (
         <div className="new-transaction">
-            <h3>{props.update ? 'Update' : 'Add New'} Transaction</h3>
+            <h3>{update ? 'Update' : 'Add New'} Transaction</h3>
             <form id="new-transaction-form" onSubmit={onSubmit}>
                 <div className="form-section">
                     <label htmlFor="amount">Amount</label>
@@ -66,8 +66,8 @@ const AddTransaction = (props) => {
                 </div>
             </form>
             <div className="form-btns">
-                <button form="new-transaction-form" className="submit-btn" type="submit">{props.update ? 'Update' : 'Add'} Transaction</button>
-                <button className="cancel-transaction" onClick={props.closeNewTransaction}>Cancel</button>
+                <button form="new-transaction-form" className="submit-btn" type="submit">{update ? 'Update' : 'Add'} Transaction</button>
+                <button className="cancel-transaction" onClick={closeNewTransaction}>Cancel</button>
             </div>
         </div>
     );

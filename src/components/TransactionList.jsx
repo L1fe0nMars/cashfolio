@@ -120,7 +120,7 @@ const TransactionList = () => {
                         : (
                             dropdownVal === 'all'
                             ? 
-                                filterTransactions(['date', 'search']).map(transaction => (<Transaction key={transaction.id} transaction={transaction} />))     
+                                filterTransactions(['date', 'search']).map(transaction => (<Transaction key={transaction.id} transaction={transaction} />))
                             :
                                 filterTransactions([dropdownVal, 'date', 'search']).length === 0
                                 ? (
