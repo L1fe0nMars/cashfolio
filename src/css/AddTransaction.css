@@ -1,11 +1,32 @@
 /* Mobile - 360px */
 @media only screen and (min-width: 0em) {
+    .background,
     .new-transaction {
-        margin: 2em auto;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+    }
+    
+    .background {
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        cursor: default;
+    }
+
+    .new-transaction {
+        margin: 0 auto;
+        padding: 2em 0;
+        display: flex;
+        flex-direction: column;
+        background-color: var(--off-white);
+        max-width: 50em;
+        border-radius: 20px;
     }
     
     #new-transaction-form {
-        margin: 1em auto;
+        margin: 0 auto;
         width: 17em;
     }
 

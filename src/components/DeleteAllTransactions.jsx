@@ -5,16 +5,17 @@ import '../css/DeleteAllTransactions.css';
 const DeleteAllTransactions = () => {
     const { data, deleteTransaction } = useContext(SaveDataContext);
     const [showConfirmation, setShowConfirmation] = useState(false);
+    const { transactions } = data;
 
     const deleteAll = () => {
-        data.transactions.map(transaction => deleteTransaction(transaction.id));
+        transactions.map(transaction => deleteTransaction(transaction.id));
         setShowConfirmation(false);
     }
 
     return (
         <div className="delete-all">
             {
-                data.transactions.length > 0
+                transactions.length > 0
                 && !showConfirmation
                 && <button className="delete-all-btn" onClick={() => setShowConfirmation(!showConfirmation)}>Delete All Transactions</button>
             }

@@ -35,39 +35,41 @@ const AddTransaction = ({ transaction, update, closeNewTransaction }) => {
     }
 
     return (
-        <div className="new-transaction">
-            <h3>{update ? 'Update' : 'Add New'} Transaction</h3>
-            <form id="new-transaction-form" onSubmit={onSubmit}>
-                <div className="form-section">
-                    <label htmlFor="amount">Amount</label>
-                    <input type="number" value={amount} onChange={(event) => setAmount(event.target.value)} placeholder="0.00" required />
+        <div className="background">
+            <div className="new-transaction">
+                <h3>{update ? 'Update' : 'Add New'} Transaction</h3>
+                <form id="new-transaction-form" onSubmit={onSubmit}>
+                    <div className="form-section">
+                        <label htmlFor="amount">Amount</label>
+                        <input type="number" value={amount} onChange={(event) => setAmount(event.target.value)} placeholder="0.00" required />
+                    </div>
+                    <div className="form-type">
+                        <input type="radio" id="radio1" value="income" onChange={(event) => setType(event.target.value)} checked={type === 'income'} />
+                        <label htmlFor="radio1">Income</label>
+                        <input type="radio" id="radio2" value="expense" onChange={(event) => setType(event.target.value)} checked={type === 'expense'} />
+                        <label htmlFor="radio2">Expense</label>
+                    </div>
+                    <div className="form-section">
+                        <label htmlFor="date">Date</label>
+                        <input type="date" value={date} onChange={(event) => setDate(event.target.value)} min="2024-01-01" max={todaysDate} required />
+                    </div>
+                    <div className="form-section">
+                        <label htmlFor="name">Name</label>
+                        <input type="text" value={name} onChange={(event) => setName(event.target.value)} placeholder="Transaction name" required />
+                    </div>
+                    <div className="form-section">
+                        <label htmlFor="desc">Description</label>
+                        <textarea id="message" name="desc" rows="2" placeholder="Description" onChange={(event) => setDesc(event.target.value)}></textarea>
+                    </div>
+                    <div className="form-section">
+                        <label htmlFor="category">Category</label>
+                        <input type="text" value={category} onChange={(event) => setCategory(event.target.value)} placeholder="Category" />
+                    </div>
+                </form>
+                <div className="form-btns">
+                    <button form="new-transaction-form" className="submit-btn" type="submit">{update ? 'Update' : 'Add'} Transaction</button>
+                    <button className="cancel-transaction" onClick={closeNewTransaction}>Cancel</button>
                 </div>
-                <div className="form-type">
-                    <input type="radio" id="radio1" value="income" onChange={(event) => setType(event.target.value)} checked={type === 'income'} />
-                    <label htmlFor="radio1">Income</label>
-                    <input type="radio" id="radio2" value="expense" onChange={(event) => setType(event.target.value)} checked={type === 'expense'} />
-                    <label htmlFor="radio2">Expense</label>
-                </div>
-                <div className="form-section">
-                    <label htmlFor="date">Date</label>
-                    <input type="date" value={date} onChange={(event) => setDate(event.target.value)} min="2024-01-01" max={todaysDate} required />
-                </div>
-                <div className="form-section">
-                    <label htmlFor="name">Name</label>
-                    <input type="text" value={name} onChange={(event) => setName(event.target.value)} placeholder="Transaction name" required />
-                </div>
-                <div className="form-section">
-                    <label htmlFor="desc">Description</label>
-                    <textarea id="message" name="desc" rows="2" placeholder="Description" onChange={(event) => setDesc(event.target.value)}></textarea>
-                </div>
-                <div className="form-section">
-                    <label htmlFor="category">Category</label>
-                    <input type="text" value={category} onChange={(event) => setCategory(event.target.value)} placeholder="Category" />
-                </div>
-            </form>
-            <div className="form-btns">
-                <button form="new-transaction-form" className="submit-btn" type="submit">{update ? 'Update' : 'Add'} Transaction</button>
-                <button className="cancel-transaction" onClick={closeNewTransaction}>Cancel</button>
             </div>
         </div>
     );

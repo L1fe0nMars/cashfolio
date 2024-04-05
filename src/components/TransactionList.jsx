@@ -14,25 +14,26 @@ const TransactionList = () => {
     const [dropdownMonth, setDropdownMonth] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
     const [newTransaction, setNewTransaction] = useState(false);
+    const { transactions, currency } = data;
 
     const filterTransactions = (filters) => {
-        let transactions = data.transactions.sort((a, b) => {return new Date(b.date.replace(/-/g, '/')) - new Date(a.date.replace(/-/g, '/'))});
+        let filteredTransactions = transactions.sort((a, b) => {return new Date(b.date.replace(/-/g, '/')) - new Date(a.date.replace(/-/g, '/'))});
 
         for (const filter of filters) {
             if (filter === 'income' || filter === 'expense') {
-                transactions = transactions.filter(transaction => transaction.type === filter);
+                filteredTransactions = filteredTransactions.filter(transaction => transaction.type === filter);
             }
             else if (filter === 'date') {
-                transactions = transactions.filter(transaction => transaction.date.includes(`2024-${dropdownMonth}`));
+                filteredTransactions = filteredTransactions.filter(transaction => transaction.date.includes(`2024-${dropdownMonth}`));
             }
             else if (filter === 'search') {
-                transactions = transactions.filter(transaction => transaction.name.toLowerCase().includes(searchTerm)
+                filteredTransactions = filteredTransactions.filter(transaction => transaction.name.toLowerCase().includes(searchTerm)
                     || transaction.desc.toLowerCase().includes(searchTerm)
                     || transaction.category.toLowerCase().includes(searchTerm));
             }
         }
         
-        return transactions;
+        return filteredTransactions;
     }
     
     const total = (type = '') => filterTransactions([type, 'date', 'search'])
@@ -51,16 +52,16 @@ const TransactionList = () => {
             <div className="transaction-header">
                 <h2>Total</h2>
                 <span className={total() > 0 ? 'income' : 'expense'}>
-                    {`${sign}${data.currency}${Math.abs(total()).toFixed(2)}`}
+                    {`${sign}${currency}${Math.abs(total()).toFixed(2)}`}
                 </span>
                 <div className="income-expense">
                     <div className="income-total">
                         <h2>Income</h2>
-                        <span className="income">{`${data.currency}${total('income').toFixed(2)}`}</span>
+                        <span className="income">{`${currency}${total('income').toFixed(2)}`}</span>
                     </div>
                     <div className="expense-total">
                         <h2>Expenses</h2>
-                        <span className="expense">{`${data.currency}${Math.abs(total('expense')).toFixed(2)}`}</span>
+                        <span className="expense">{`${currency}${Math.abs(total('expense')).toFixed(2)}`}</span>
                     </div>
                 </div>
             </div>
@@ -92,7 +93,7 @@ const TransactionList = () => {
                                     Array.from({ length: 12 }, (_, index) => {
                                         const month = String(index).padStart(2, '0');
                                         const monthName = new Date(`${year}-${month}-12`).toLocaleString('en-US', { month: 'long' });
-                                        const hasTransactions = data.transactions.filter(transaction => transaction.date.includes(`${year}-${month}`)).length > 0;
+                                        const hasTransactions = transactions.filter(transaction => transaction.date.includes(`${year}-${month}`)).length > 0;
                                         
                                         return hasTransactions && <option key={month} value={month}>{monthName}</option>;
                                     })
@@ -113,7 +114,7 @@ const TransactionList = () => {
 
                 <ul>
                     {
-                        data.transactions.length === 0 || filterTransactions(['search']).length === 0
+                        transactions.length === 0 || filterTransactions(['search']).length === 0
                         ? (
                             <li className="no-transactions">No transactions found</li>
                         )
