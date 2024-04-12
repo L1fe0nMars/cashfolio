@@ -88,6 +88,9 @@
         font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
         font-weight: 400;
         font-size: 1em;
+        min-height: 2em;
+        max-height: 20em;
+        resize: vertical;
     }
 
     .income {
