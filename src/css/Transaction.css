@@ -34,6 +34,7 @@
 
     .transaction-info-right {
         display: flex;
+        align-items: flex-end;
         flex-direction: column;
         text-align: center;
         gap: 0.25em;
