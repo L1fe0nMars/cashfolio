@@ -41,7 +41,7 @@ const AddTransaction = ({ transaction, update, closeNewTransaction }) => {
                 <form id="new-transaction-form" onSubmit={onSubmit}>
                     <div className="form-section">
                         <label htmlFor="amount">Amount</label>
-                        <input type="number" value={amount} onChange={(event) => setAmount(event.target.value)} placeholder="0.00" required />
+                        <input type="number" value={amount} onChange={(event) => setAmount(event.target.value)} min="0.01" step="0.01" placeholder="0.00" required />
                     </div>
                     <div className="form-type">
                         <input type="radio" id="radio1" value="income" onChange={(event) => setType(event.target.value)} checked={type === 'income'} />
@@ -59,7 +59,7 @@ const AddTransaction = ({ transaction, update, closeNewTransaction }) => {
                     </div>
                     <div className="form-section">
                         <label htmlFor="desc">Description</label>
-                        <textarea id="message" name="desc" rows="2" placeholder="Description" onChange={(event) => setDesc(event.target.value)}></textarea>
+                        <textarea id="message" name="desc" rows="2" value={desc} onChange={(event) => setDesc(event.target.value)} placeholder="Description"></textarea>
                     </div>
                     <div className="form-section">
                         <label htmlFor="category">Category</label>
