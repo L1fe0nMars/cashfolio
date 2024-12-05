@@ -90,7 +90,7 @@ const TransactionList = () => {
                             <select value={dropdownMonth} onChange={(event) => setDropdownMonth(event.target.value)}>
                                 <option value="">Any</option>
                                 {
-                                    Array.from({ length: 12 }, (_, index) => {
+                                    Array.from({ length: 13 }, (_, index) => {
                                         const month = String(index).padStart(2, '0');
                                         const monthName = new Date(`${year}-${month}-12`).toLocaleString('en-US', { month: 'long' });
                                         const hasTransactions = transactions.filter(transaction => transaction.date.includes(`${year}-${month}`)).length > 0;
