@@ -1,14 +1,12 @@
-/* Mobile - 360px */
-@media only screen and (min-width: 0em) {
-    .transaction-home {
-        margin: 0 auto;
-        max-width: 50em;
-    }
+.transaction-home {
+    margin: 0 auto;
+    max-width: 50em;
+}
 
-    .transaction-header {
-        margin: 2em auto;
-    }
-    
+.transaction-header {
+    margin: 2em auto;
+}
+
     .transaction-header h2 {
         font-size: 2em;
         font-weight: 600;
@@ -21,21 +19,21 @@
         font-size: 2.5em;
     }
 
-    .income-expense {
-        margin: 2em auto;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 2em;
-    }
+.income-expense {
+    margin: 2em auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2em;
+}
 
-    .income-total,
-    .expense-total {
-        padding: 1em;
-        min-width: 35%;
-        border-radius: 10px;
-    }
+.income-total,
+.expense-total {
+    padding: 1em;
+    min-width: 35%;
+    border-radius: 10px;
+}
 
     .income-total h2,
     .expense-total h2 {
@@ -48,53 +46,63 @@
         font-size: 1.4em;
     }
 
-    .income-total {
-        background-color: var(--income-light);
-    }
+.income-total {
+    background-color: var(--income-light);
+}
 
     .income-total h2 {
         color: var(--income);
     }
 
-    .expense-total {
-        background-color: var(--expense-light);
-    }
+.expense-total {
+    background-color: var(--expense-light);
+}
 
     .expense-total h2 {
         color: var(--expense);
     }
-    
-    .transaction-list {
-        padding: 1em;
-        padding-top: 0.25em;
-        background-color: var(--off-white);
-        border-radius: 20px;
-    }
 
-    .transaction-options {
-        margin: 1em auto;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
+.transaction-list {
+    padding: 1em;
+    padding-top: 0.25em;
+    background-color: var(--off-white);
+    border-radius: 20px;
+}
 
-    select {
-        padding-right: 1em;
-        border: none;
-        background-color: inherit;
-        font-size: 1.75em;
-        font-family: inherit;
-        font-weight: 700;
-        background: url(../assets/images/arrow-down.svg) no-repeat right;
-        cursor: pointer;
-        appearance: none;
-        -moz-appearance: none;
-        -webkit-appearance: none;
-    }
-    
-    .date-period {
-        width: max-content;
-    }
+.transaction-options {
+    margin: 1em auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.filter-options {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1em;
+}
+
+select {
+    padding-right: 1em;
+    border: none;
+    background-color: inherit;
+    font-size: 1.75em;
+    font-family: inherit;
+    font-weight: 700;
+    background: url(../assets/images/arrow-down.svg) no-repeat right;
+    cursor: pointer;
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+}
+
+.date-period {
+    width: max-content;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
+}
 
     .date-period label {
         font-weight: 700;
@@ -107,43 +115,36 @@
         font-weight: 400;
     }
 
-    .add-transaction-btn {
-        width: 2em;
-        height: 2em;
-        border-radius: 50%;
-        background-color: var(--primary);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+.add-transaction-btn {
+    width: 2em;
+    height: 2em;
+    border-radius: 50%;
+    background-color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
     .add-transaction-btn svg {
         fill: var(--off-white);
     }
 
-    .filter-options {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-
-    .search {
-        display: flex;
-        align-items: center;
-        gap: 0.5em;
-    }
+.search {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+}
 
     .search input {
         width: 5em;
     }
 
-    .no-transactions {
-        padding: 3em 0 2em 0;
-        font-weight: 500;
-    }
+.no-transactions {
+    padding: 3em 0 2em 0;
+    font-weight: 500;
+}
 
-    .transaction-list ul {
-        padding: 1em 0;
-        list-style-type: none;
-    }
+.transaction-list ul {
+    padding: 1em 0;
+    list-style-type: none;
 }

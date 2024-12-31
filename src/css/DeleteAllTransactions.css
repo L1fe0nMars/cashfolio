@@ -1,31 +1,29 @@
-/* Mobile - 360px */
-@media only screen and (min-width: 0em) {
-    .delete-all-btn {
-        margin: 1em auto;
-        padding: 0.5em 2em;
-        border: 2px solid var(--expense);
-        border-radius: 20px;
-        color: var(--off-white);
-        background-color: var(--expense);
-        font-weight: 500;
-    }
+.delete-all-btn {
+    margin: 1em auto;
+    padding: 0.5em 2em;
+    border: 2px solid var(--expense);
+    border-radius: 20px;
+    color: var(--off-white);
+    background-color: var(--expense);
+    font-weight: 500;
+}
 
-    .delete-confirm {
-        background-color: var(--off-white);
-    }
+.delete-confirm {
+    background-color: var(--off-white);
+}
 
     .delete-confirm p {
         padding: 1em 0;
         font-weight: 500;
     }
 
-    .confirm-btns {
-        padding: 0.5em 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 1em;
-    }
+.confirm-btns {
+    padding: 0.5em 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1em;
+}
 
     .confirm-btns button {
         padding: 0.5em 2em;
@@ -33,14 +31,13 @@
         font-weight: 500;
     }
 
-    .confirm-delete {
-        color: var(--off-white);
-        background-color: var(--expense);
-        border: 2px solid var(--expense);
-    }
+.confirm-delete {
+    color: var(--off-white);
+    background-color: var(--expense);
+    border: 2px solid var(--expense);
+}
 
-    .confirm-cancel {
-        color: var(--primary);
-        border: 2px solid var(--primary);
-    }
+.confirm-cancel {
+    color: var(--primary);
+    border: 2px solid var(--primary);
 }

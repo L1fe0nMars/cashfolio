@@ -1,56 +1,50 @@
-/* Mobile - 360px */
-@media only screen and (min-width: 0em) {
-    .background,
-    .new-transaction {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 100%;
-    }
-    
-    .background {
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        cursor: default;
-    }
+.background,
+.new-transaction {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+}
 
-    .new-transaction {
-        margin: 0 auto;
-        padding: 2em 0;
-        display: flex;
-        flex-direction: column;
-        background-color: var(--off-white);
-        max-width: 50em;
-        border-radius: 20px;
-    }
-    
-    #new-transaction-form {
-        margin: 0 auto;
-        width: 17em;
-    }
+.background {
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    cursor: default;
+}
 
-    .form-section {
-        margin: 1em auto;
-        text-align: left;
-        display: flex;
-        flex-direction: column;
-    }
+.new-transaction {
+    margin: 0 auto;
+    padding: 2em 0;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--off-white);
+    max-width: 50em;
+    border-radius: 20px;
+}
+
+#new-transaction-form {
+    margin: 0 auto;
+    width: 17em;
+}
+
+.form-section {
+    margin: 1em auto;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+}
 
     .form-section label {
         margin-bottom: 0.25em;
     }
 
-    .form-type {
-        margin: 0 auto;
-        border: 2px solid #cccccc;
-        border-radius: 10px;
-        width: max-content;
-    }
-
-    .form-type input[type="radio"] {
-        display: none;
-    }
+.form-type {
+    margin: 0 auto;
+    border: 2px solid #cccccc;
+    border-radius: 10px;
+    width: max-content;
+}
 
     .form-type label {
         margin: 0.1em;
@@ -61,17 +55,21 @@
         cursor: pointer;
     }
 
-    .form-type input[type="radio"]:checked + label {
-        background-color: #cccccc;
+    .form-type input[type="radio"] {
+        display: none;
     }
 
-    .form-btns {
-        padding: 0.5em 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 1em;
-    }
+        .form-type input[type="radio"]:checked + label {
+            background-color: #cccccc;
+        }
+
+.form-btns {
+    padding: 0.5em 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1em;
+}
 
     .form-btns button {
         padding: 0.5em 2em;
@@ -79,14 +77,13 @@
         font-weight: 500;
     }
 
-    .submit-btn {
-        background-color: var(--primary);
-        color: var(--off-white);
-        border: 2px solid var(--primary);
-    }
+.submit-btn {
+    background-color: var(--primary);
+    color: var(--off-white);
+    border: 2px solid var(--primary);
+}
 
-    .cancel-transaction {
-        color: var(--expense);
-        border: 2px solid var(--expense);
-    }
+.cancel-transaction {
+    color: var(--expense);
+    border: 2px solid var(--expense);
 }

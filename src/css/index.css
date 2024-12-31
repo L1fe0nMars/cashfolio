@@ -1,106 +1,103 @@
-/* Mobile - 360px */
-@media only screen and (min-width: 0em) {
-    :root {
-        font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-        font-weight: 400;
-    
-        --off-white: #f5f5f5;
-        --dark-mode: #1c1c1c;
-        --primary: #2236a8;
-        --text-light: #adadad;
-        --income: #0ba549;
-        --income-light: #ebffeb;
-        --expense: #f12929;
-        --expense-light: #ffeaea;
-    }
-    
-    /* inter-regular - latin */
-    @font-face {
-        font-display: swap;
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 400;
-        src: url('../assets/fonts/inter-v13-latin/inter-v13-latin-regular.woff2') format('woff2');
-    }
-    /* inter-500 - latin */
-    @font-face {
-        font-display: swap;
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 500;
-        src: url('../assets/fonts/inter-v13-latin/inter-v13-latin-500.woff2') format('woff2');
-    }
-    /* inter-600 - latin */
-    @font-face {
-        font-display: swap;
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 600;
-        src: url('../assets/fonts/inter-v13-latin/inter-v13-latin-600.woff2') format('woff2');
-    }
-    /* inter-700 - latin */
-    @font-face {
-        font-display: swap;
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 700;
-        src: url('../assets/fonts/inter-v13-latin/inter-v13-latin-700.woff2') format('woff2');
-    }
-    
-    * {
-        padding: 0;
-        margin: 0;
-        box-sizing: border-box;
-        color: var(--dark-mode);
-    }
-    
-    body {
-        margin: 0;
-        padding: 0;
-        background-color: var(--off-white);
-    }
-    
-    a {
-        text-decoration: none;
-        color: inherit;
-    }
-    
-    button {
-        all: unset;
-        cursor: pointer;
-    }
-    
-    img {
-        user-select: none;
-        margin: 0 auto;
-        display: block;
-    }
-    
-    h1 {
-        font-weight: 700;
-    }
+:root {
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    font-weight: 400;
 
-    input,
-    textarea {
-        padding: 0.25em;
-        border: 1px solid var(--dark-mode);
-        border-radius: 5px;
-        font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-        font-weight: 400;
-        font-size: 1em;
-    }
+    --off-white: #f5f5f5;
+    --dark-mode: #1c1c1c;
+    --primary: #2236a8;
+    --text-light: #adadad;
+    --income: #0ba549;
+    --income-light: #ebffeb;
+    --expense: #f12929;
+    --expense-light: #ffeaea;
+}
 
-    textarea {
-        min-height: 2em;
-        max-height: 20em;
-        resize: vertical;
-    }
+/* inter-regular - latin */
+@font-face {
+    font-display: swap;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    src: url('../assets/fonts/inter-v13-latin/inter-v13-latin-regular.woff2') format('woff2');
+}
+/* inter-500 - latin */
+@font-face {
+    font-display: swap;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    src: url('../assets/fonts/inter-v13-latin/inter-v13-latin-500.woff2') format('woff2');
+}
+/* inter-600 - latin */
+@font-face {
+    font-display: swap;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    src: url('../assets/fonts/inter-v13-latin/inter-v13-latin-600.woff2') format('woff2');
+}
+/* inter-700 - latin */
+@font-face {
+    font-display: swap;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    src: url('../assets/fonts/inter-v13-latin/inter-v13-latin-700.woff2') format('woff2');
+}
 
-    .income {
-        color: var(--income);
-    }
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    color: var(--dark-mode);
+}
 
-    .expense {
-        color: var(--expense);
-    }
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--off-white);
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button {
+    all: unset;
+    cursor: pointer;
+}
+
+img {
+    user-select: none;
+    margin: 0 auto;
+    display: block;
+}
+
+h1 {
+    font-weight: 700;
+}
+
+input,
+textarea {
+    padding: 0.25em;
+    border: 1px solid var(--dark-mode);
+    border-radius: 5px;
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    font-weight: 400;
+    font-size: 1em;
+}
+
+textarea {
+    min-height: 2em;
+    max-height: 20em;
+    resize: vertical;
+}
+
+.income {
+    color: var(--income);
+}
+
+.expense {
+    color: var(--expense);
 }

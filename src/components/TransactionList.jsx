@@ -7,11 +7,12 @@ import '../css/TransactionList.css';
 
 const TransactionList = () => {
     const date = new Date();
-    const year = date.getFullYear();
+    const currentYear = date.getFullYear();
     
     const { data } = useContext(SaveDataContext);
     const [dropdownVal, setDropdownVal] = useState('all');
     const [dropdownMonth, setDropdownMonth] = useState('');
+    const [dropdownYear, setDropdownYear] = useState(currentYear);
     const [searchTerm, setSearchTerm] = useState('');
     const [newTransaction, setNewTransaction] = useState(false);
     const { transactions, currency } = data;
@@ -24,7 +25,7 @@ const TransactionList = () => {
                 filteredTransactions = filteredTransactions.filter(transaction => transaction.type === filter);
             }
             else if (filter === 'date') {
-                filteredTransactions = filteredTransactions.filter(transaction => transaction.date.includes(`2024-${dropdownMonth}`));
+                filteredTransactions = filteredTransactions.filter(transaction => transaction.date.includes(`${dropdownYear}-${dropdownMonth}`));
             }
             else if (filter === 'search') {
                 filteredTransactions = filteredTransactions.filter(transaction => transaction.name.toLowerCase().includes(searchTerm)
@@ -86,19 +87,33 @@ const TransactionList = () => {
                 <div className="filter-options">
                     {
                         <form className="date-period">
-                            <label>Month: </label>
-                            <select value={dropdownMonth} onChange={(event) => setDropdownMonth(event.target.value)}>
-                                <option value="">Any</option>
-                                {
-                                    Array.from({ length: 13 }, (_, index) => {
-                                        const month = String(index).padStart(2, '0');
-                                        const monthName = new Date(`${year}-${month}-12`).toLocaleString('en-US', { month: 'long' });
-                                        const hasTransactions = transactions.filter(transaction => transaction.date.includes(`${year}-${month}`)).length > 0;
-                                        
-                                        return hasTransactions && <option key={month} value={month}>{monthName}</option>;
-                                    })
-                                }
-                            </select>
+                            <div className='month-dropdown'>
+                                <label>Month: </label>
+                                <select value={dropdownMonth} onChange={(event) => setDropdownMonth(event.target.value)}>
+                                    <option value="">Any</option>
+                                    {
+                                        Array.from({ length: 13 }, (_, index) => {
+                                            const month = String(index).padStart(2, '0');
+                                            const monthName = new Date(`${dropdownYear}-${month}-12`).toLocaleString('en-US', { month: 'long' });
+                                            const hasTransactions = transactions.filter(transaction => transaction.date.includes(`${dropdownYear}-${month}`)).length > 0;
+                                            
+                                            return hasTransactions && <option key={month} value={month}>{monthName}</option>;
+                                        })
+                                    }
+                                </select>
+                            </div>
+                            <div className='year-dropdown'>
+                                <label>Year: </label>
+                                <select value={dropdownYear} onChange={(event) => setDropdownYear(event.target.value)}>
+                                    {
+                                        [...new Set(transactions.map(transaction => transaction.date.split('-')[0]))]
+                                            .sort((a, b) => b - a)
+                                            .map(year => (
+                                                <option key={year} value={year}>{year}</option>
+                                            ))
+                                    }
+                                </select>
+                            </div>
                         </form>
                     }
 

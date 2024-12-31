@@ -1,27 +1,24 @@
-/* Mobile - 360px */
-@media only screen and (min-width: 0em) {
-    footer {
-        padding: 2em 1em;
-    }
+footer {
+    padding: 2em 1em;
+}
 
     footer p {
         color: var(--off-white);
-    }
-
-    #disclaimer {
-        margin-bottom: 1em;
-    }
-
-    #disclaimer span {
-        color: inherit;
-        font-weight: 700;
     }
 
     footer a {
         color: #00ebeb;
     }
 
-    footer a:hover {
-        text-decoration: underline;
-    }
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+#disclaimer {
+    margin-bottom: 1em;
 }
+
+    #disclaimer span {
+        color: inherit;
+        font-weight: 700;
+    }
