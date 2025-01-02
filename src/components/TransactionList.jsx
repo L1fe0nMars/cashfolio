@@ -10,12 +10,14 @@ const TransactionList = () => {
     const currentYear = date.getFullYear();
     
     const { data } = useContext(SaveDataContext);
+    const { transactions, currency } = data;
+    const recentYear = transactions[0].date.split('-')[0];
+
     const [dropdownVal, setDropdownVal] = useState('all');
     const [dropdownMonth, setDropdownMonth] = useState('');
-    const [dropdownYear, setDropdownYear] = useState(currentYear);
+    const [dropdownYear, setDropdownYear] = useState(recentYear || currentYear);
     const [searchTerm, setSearchTerm] = useState('');
     const [newTransaction, setNewTransaction] = useState(false);
-    const { transactions, currency } = data;
 
     const filterTransactions = (filters) => {
         let filteredTransactions = transactions.sort((a, b) => {return new Date(b.date.replace(/-/g, '/')) - new Date(a.date.replace(/-/g, '/'))});
