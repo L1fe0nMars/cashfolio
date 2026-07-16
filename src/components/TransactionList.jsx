@@ -11,7 +11,7 @@ const TransactionList = () => {
     
     const { data } = useContext(SaveDataContext);
     const { transactions, currency } = data;
-    const recentYear = transactions[0].date.split('-')[0];
+    const recentYear =  transactions[0]?.date?.split('-')[0] ?? currentYear;
 
     const [dropdownVal, setDropdownVal] = useState('all');
     const [dropdownMonth, setDropdownMonth] = useState('');
