@@ -71,19 +71,8 @@
     gap: 1em;
 }
 
-    .form-btns button {
-        padding: 0.5em 2em;
-        border-radius: 20px;
-        font-weight: 500;
-    }
-
-.submit-btn {
-    background-color: var(--primary);
-    color: var(--off-white);
-    border: 2px solid var(--primary);
-}
-
 .cancel-transaction {
+    background-color: transparent;
     color: var(--expense);
     border: 2px solid var(--expense);
 }

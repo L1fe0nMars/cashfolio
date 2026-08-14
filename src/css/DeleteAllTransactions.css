@@ -25,12 +25,6 @@
     gap: 1em;
 }
 
-    .confirm-btns button {
-        padding: 0.5em 2em;
-        border-radius: 20px;
-        font-weight: 500;
-    }
-
 .confirm-delete {
     color: var(--off-white);
     background-color: var(--expense);
@@ -38,6 +32,7 @@
 }
 
 .confirm-cancel {
+    background-color: transparent;
     color: var(--primary);
     border: 2px solid var(--primary);
 }

@@ -21,7 +21,7 @@ const AddTransaction = ({ transaction, update, closeNewTransaction }) => {
         event.preventDefault();
 
         const newTransaction = {
-            id: transaction?.id || Math.floor(Math.random() * 100000000),
+            id: transaction?.id || crypto.randomUUID(),
             type,
             name,
             desc,

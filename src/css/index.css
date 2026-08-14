@@ -67,6 +67,12 @@ button {
     all: unset;
     cursor: pointer;
     transition: 0.15s ease-in-out;
+    background-color: var(--primary);
+    color: var(--off-white);
+    border: 2px solid var(--primary);
+    border-radius: 20px;
+    padding: .5em 2em;
+    font-weight: 500;
 }
 
     button:focus {

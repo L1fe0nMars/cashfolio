@@ -116,6 +116,7 @@ select {
     }
 
 .add-transaction-btn {
+    padding: 0;
     width: 2em;
     height: 2em;
     border-radius: 50%;

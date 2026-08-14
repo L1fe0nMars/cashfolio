@@ -15,7 +15,7 @@ const Settings = (props) => {
 
             <h2>Settings</h2>
 
-            <h2>General</h2>
+            <h3>General</h3>
             <form>
                 
             </form>

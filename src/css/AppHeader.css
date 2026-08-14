@@ -12,3 +12,8 @@
     .app-header svg {
         fill: var(--off-white);
     }
+
+.data-actions {
+    display: flex;
+    gap: 0.5em;
+}
