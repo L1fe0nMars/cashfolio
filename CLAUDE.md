@@ -1,0 +1,122 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## Project Overview
+
+CashFolio is a React single-page app for tracking expenses and income. Users add, edit, delete, filter, and search transactions, and can export or import their data as a JSON backup. Everything runs in the browser: there is no backend or external API, and all data is saved to `localStorage`.
+
+## Technology Baseline
+
+These versions are authoritative for this repository:
+
+- **Runtime:** React 19.2 and React DOM 19.2 (`createRoot`, `StrictMode`), plain JavaScript/JSX (no TypeScript)
+- **Tooling:** Vite 8 with `@vitejs/plugin-react` 6 (`vite.config.js`). ESLint 9 with `eslint-plugin-react`, `eslint-plugin-react-hooks`, and `eslint-plugin-react-refresh`, configured as a flat config in `eslint.config.js`. Stay on ESLint 9 until `eslint-plugin-react` supports ESLint 10. `package.json` uses `"type": "module"`.
+- **State:** React Context + `useReducer`, persisted to `localStorage` (no Redux or other state library)
+- **Navigation:** None. `App.jsx` renders a single page, and modals are toggled with local component state (no router)
+- **Styling:** Plain CSS, one file per component, with CSS custom properties for colors in `src/css/index.css`. Self-hosted Inter font.
+- **Testing:** No test framework is configured
+
+Do not upgrade React, Vite, or other packages, or add dependencies, without explicit approval. When unsure how to implement something or whether a pattern is current, check the official documentation for the baseline version (React 19, Vite 8, ESLint 9) rather than relying on recalled knowledge.
+
+## Engineering Authority
+
+When deciding how code should be written, use this order. A higher source wins when sources conflict:
+
+1. Explicit user requirements
+2. Security requirements
+3. Established patterns in the existing codebase
+4. Official documentation for the baseline versions
+5. General React best practices
+
+Do not replace an established project pattern with a newer framework pattern (for example, adding a router, a state library, or CSS-in-JS) unless the change is justified and approved.
+
+## Build and Run Commands
+
+```bash
+# Install dependencies
+npm install
+
+# Run the dev server with hot reload
+npm run dev
+
+# Production build (outputs to dist/)
+npm run build
+
+# Serve the production build locally
+npm run preview
+
+# Lint (warnings count as failures)
+npm run lint
+```
+
+Vite does not lint during dev or build. Files containing JSX must use the `.jsx` extension. With no automated tests, validate changes by running lint and manually testing the affected flows in `npm run dev`: add, edit, delete, delete all, filtering, search, import/export, and data persisting across a page reload.
+
+## Architecture
+
+### Project Structure
+
+- **src/main.jsx** - Mounts `App` in `StrictMode` and imports global styles
+- **src/App.jsx** - App shell: wraps `AppHeader`, `TransactionList`, and `Footer` in `SaveDataProvider`
+- **src/components/** - One `.jsx` file per UI component
+- **src/context/** - `SaveDataContext.jsx` (provider and action helpers) and `SaveDataReducer.jsx`
+- **src/css/** - One stylesheet per component, plus `index.css` for global styles, color variables, and `@font-face` rules
+- **src/assets/** - SVG images and the Inter font files
+- **public/** - Static files served as-is (`robots.txt`)
+
+### Key Architectural Patterns
+
+**Save Data:**
+- `SaveDataContext` holds a single `data` object in a `useReducer` and writes it to `localStorage['data']` on every change: `{ transactions: [], darkMode: false, currency: '$', dateFormat: 'mm/dd' }`.
+- On load, saved data replaces `initialData` entirely. Unlike a backfill, keys added to `initialData` later will be missing for users who already have saved data, so any new key needs a fallback where it is read (or a backfill added to the provider).
+- Action helpers from the context: `addTransaction` (prepends), `updateTransaction` (merges by `id`), `deleteTransaction` (by `id`), and `saveData(partial)`, which shallow-merges into `data`.
+
+**Transactions:**
+- Shape: `{ id: crypto.randomUUID(), type: 'income' | 'expense', name, desc, category, date: 'YYYY-MM-DD', amount }`. `amount` is always stored as a positive number, and its sign comes from `type`.
+- Dates are stored as `YYYY-MM-DD` strings. Month and year filtering match substrings like `` `${year}-${month}` ``. When parsing, the code replaces `-` with `/` so `new Date()` treats the date as local time rather than UTC.
+- `AddTransaction.jsx` handles both creating and editing. Passing `transaction` and `update` switches it to edit mode. The date input allows 2024-01-01 through today.
+- `DeleteAllTransactions.jsx` asks for confirmation, then calls `deleteTransaction` for each transaction.
+
+**Transaction List:**
+- `TransactionList.jsx` owns all view logic: the type dropdown (all, income, expense), month and year dropdowns, search across name, description, and category, the income/expense/net totals, and whether the add modal is open. Filter state is local and not persisted.
+- The year dropdown lists only years that have transactions, and the month dropdown lists only months with transactions in the selected year.
+- `filterTransactions` sorts the `transactions` array in place, which mutates reducer state. Avoid relying on this, and fix it if touching that code.
+
+**Import/Export:**
+- `AppHeader.jsx` exports the full `data` object as `cashfolio-backup.json`. Import accepts any JSON file with a `transactions` array and merges it into state with `saveData`. Fields inside each transaction are not validated.
+
+**Display Settings:**
+- `Transaction.jsx` reads `currency` and `dateFormat` (`mm/dd` or `dd/mm`, shown as `mm/dd/yy` or `dd/mm/yy`, with "Today" and "Yesterday" for recent dates).
+- `darkMode` is stored but nothing uses it yet. `Settings.jsx` is an unfinished stub: no component renders it, and it imports `src/css/Settings.css`, which does not exist yet.
+
+## Collaboration Rules
+
+- **Always propose changes and get explicit user approval before making any edits to files.** Present the full plan (what files will change and how), then wait for confirmation before calling any agent or editing any file.
+- Use subagents for isolated or parallel work (security passes, audits, research spanning several areas). Handle small, focused edits directly.
+- When spawning agents, delegate research/planning separately from implementation, and only invoke an implementation agent after the user has approved the plan.
+- Approval is gated by the main session only. A subagent given an approved task implements it directly without asking for its own confirmation. If it finds necessary work outside that scope (new dependencies, changes to the save data shape, new architectural patterns), it stops and reports back instead of doing it.
+- Keep explanations clear and concise. Lead with the answer, use plain language, and skip preamble and restatements of the request.
+- Do not use em dashes in responses, code comments, commit messages, or documentation. Use a hyphen (-), comma, colon, parentheses, or a separate sentence instead.
+
+## Code Conventions
+
+- Function components written as arrow functions (`const Name = ({ props }) => { ... }`) with `export default Name;` at the bottom of the file
+- Component files use `.jsx` and `PascalCase` names; each imports its own stylesheet from `src/css/` with the same name
+- 4-space indentation, semicolons, single quotes in JS
+- CSS class names in `kebab-case`
+- Read state with `useContext(SaveDataContext)` and destructure the needed fields from `data`
+- Commit messages: brief, capitalized past-tense summary (`Added import/export options`, `Fixed issue with initial year selected`). Keep commits focused and do not commit `dist/` or `node_modules/`.
+- Comments: use for non-obvious logic (hidden constraints, subtle invariants, workarounds, or behavior that would surprise a reader). Don't explain what the code does; well-named identifiers do that.
+- No vertical alignment: do not pad spaces to align `=`, `:`, object keys, or anything else across lines.
+
+## Data and Persistence
+
+- All persisted state goes through `SaveDataContext`. Do not read or write `localStorage` directly from components.
+- Renaming or removing a key in the save data, or changing the transaction shape, affects existing users' saved data and their exported backups. Treat these changes as needing approval, and keep import compatible with older backups.
+- The footer warns users not to enter sensitive information. Data never leaves the browser except through a user-initiated export, so do not add network requests, analytics, or third-party scripts without approval.
+
+## Simplicity and Efficiency
+
+- Before adding a helper, check whether an existing component already has the logic (for example, `formatDate` in `Transaction.jsx`) and reuse or extract it instead of duplicating it.
+- When the same multi-line logic appears in two components, extract it into a shared helper. Don't extract one-liners.
+- Avoid recomputing the same filtered list several times in one render when a single computed value would do.
