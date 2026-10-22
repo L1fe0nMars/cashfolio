@@ -15,5 +15,25 @@
 
 .data-actions {
     display: flex;
+    align-items: center;
     gap: 0.5em;
 }
+
+/* The gear is an outline icon, so it uses stroke instead of the fill set on header icons above */
+.settings-btn {
+    padding: 0;
+    width: 2.25em;
+    height: 2.25em;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .settings-btn svg {
+        fill: none;
+        stroke: var(--on-primary);
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }

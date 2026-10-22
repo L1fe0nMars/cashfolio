@@ -1,0 +1,31 @@
+.settings {
+    padding: 2em;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+    max-width: 22em;
+}
+
+.settings-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5em;
+}
+
+    /* Overrides the large title-style select from TransactionList.css */
+    .settings-section select {
+        width: 100%;
+        padding: 0.4em 2em 0.4em 0.5em;
+        font-size: 1em;
+        font-weight: 400;
+        border: 1px solid var(--border);
+        border-radius: 5px;
+        background-color: var(--surface-raised);
+        background-position: right 0.5em center;
+        background-size: 1.25em;
+    }
+
+.close-settings {
+    align-self: center;
+}

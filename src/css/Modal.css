@@ -1,0 +1,22 @@
+.background,
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+}
+
+.background {
+    z-index: 10;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    cursor: default;
+}
+
+.modal {
+    margin: 0 auto;
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+}

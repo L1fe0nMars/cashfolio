@@ -13,7 +13,7 @@ These versions are authoritative for this repository:
 - **Runtime:** React 19.3 and React DOM 19.3 (`createRoot`, `StrictMode`), plain JavaScript/JSX (no TypeScript)
 - **Tooling:** Vite 8 with `@vitejs/plugin-react` 6 (`vite.config.js`). ESLint 9 with `eslint-plugin-react`, `eslint-plugin-react-hooks`, and `eslint-plugin-react-refresh`, configured as a flat config in `eslint.config.js`. Stay on ESLint 9 until `eslint-plugin-react` supports ESLint 10. `package.json` uses `"type": "module"`.
 - **State:** React Context + `useReducer`, persisted to `localStorage` (no Redux or other state library)
-- **Navigation:** None. `App.jsx` renders a single page, and modals are toggled with local component state (no router)
+- **Navigation:** None. `App.jsx` renders a single page, and modals are toggled with local component state (no router). Every modal renders through `Modal.jsx`, which owns the backdrop, Escape to close, and closing only when a click both starts and ends on the backdrop
 - **Styling:** Plain CSS, one file per component, with CSS custom properties for colors in `src/css/index.css`. Shared control styles (like `.segmented`) also live there. Self-hosted Inter font.
 - **Testing:** No test framework is configured
 
@@ -85,13 +85,14 @@ Vite does not lint during dev or build. Files containing JSX must use the `.jsx`
 - Single deletes go through `removeTransaction`, which keeps the deleted transaction for 5 seconds so it can be restored with `addTransaction`.
 
 **Import/Export:**
-- `AppHeader.jsx` exports the full `data` object as `cashfolio-backup.json`. Import only accepts backups in the current format: `currency` and `dateFormat` strings plus a `transactions` array where every transaction matches the current shape (string `id`, valid `type`, string `name`/`desc`/`category`, `YYYY-MM-DD` date, positive number `amount`). Any invalid entry rejects the whole file. Only `transactions`, `currency`, and `dateFormat` are merged into state with `saveData`, replacing the current transactions (it asks for confirmation first when there are existing transactions).
+- `AppHeader.jsx` exports the full `data` object as `cashfolio-backup.json`. Import only accepts backups in the current format: a `currency` string, a `dateFormat` of `mm/dd` or `dd/mm`, plus a `transactions` array where every transaction matches the current shape (string `id`, valid `type`, string `name`/`desc`/`category`, `YYYY-MM-DD` date, positive number `amount`). Any invalid entry rejects the whole file. Only `transactions`, `currency`, and `dateFormat` are merged into state with `saveData`, replacing the current transactions (it asks for confirmation first when there are existing transactions).
 
 **Display Settings:**
 - `TransactionList.jsx` groups rows under sticky date headers that show the day's net. Headers use `formatDate` with `dateFormat` (`mm/dd` shows "Sat, Oct 18", `dd/mm` shows "Sat, 18 Oct", with "Today" and "Yesterday" for recent dates). Rows themselves show no date. A label under the total names the period and any active search.
 - Amounts are displayed through `formatAmount` (thousands separators, optional +/- sign).
 - The app is always dark: colors are semantic tokens in `src/css/index.css` (`--bg`, `--surface`, `--surface-raised`, `--text`, `--text-muted`, `--border`, etc.) with `color-scheme: dark`. Use the tokens rather than raw colors. `arrow-down.svg` is a CSS background, so its fill is hardcoded to match `--text`.
-- `darkMode` is stored but nothing uses it (there is no theme toggle). There is no settings UI yet, so `currency` and `dateFormat` always keep their defaults unless changed by an import.
+- The gear button in `AppHeader.jsx` opens `Settings.jsx`, a modal with a currency dropdown and a date format toggle. Changes save immediately through `saveData`. A currency that isn't in the list (for example from an import) is added as a "Custom" option so the dropdown is never blank. Import, export, and Delete All intentionally stay outside Settings.
+- `darkMode` is stored but nothing uses it (there is no theme toggle).
 
 ## Collaboration Rules
 
