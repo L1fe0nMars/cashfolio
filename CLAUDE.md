@@ -10,7 +10,7 @@ CashFolio is a React single-page app for tracking expenses and income. Users add
 
 These versions are authoritative for this repository:
 
-- **Runtime:** React 19.2 and React DOM 19.2 (`createRoot`, `StrictMode`), plain JavaScript/JSX (no TypeScript)
+- **Runtime:** React 19.3 and React DOM 19.3 (`createRoot`, `StrictMode`), plain JavaScript/JSX (no TypeScript)
 - **Tooling:** Vite 8 with `@vitejs/plugin-react` 6 (`vite.config.js`). ESLint 9 with `eslint-plugin-react`, `eslint-plugin-react-hooks`, and `eslint-plugin-react-refresh`, configured as a flat config in `eslint.config.js`. Stay on ESLint 9 until `eslint-plugin-react` supports ESLint 10. `package.json` uses `"type": "module"`.
 - **State:** React Context + `useReducer`, persisted to `localStorage` (no Redux or other state library)
 - **Navigation:** None. `App.jsx` renders a single page, and modals are toggled with local component state (no router)

@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect, useRef } from 'react';
+import { useState, useContext, useEffect, useEffectEvent, useRef } from 'react';
 import { SaveDataContext } from '../context/SaveDataContext';
 import '../css/AddTransaction.css';
 
@@ -20,16 +20,16 @@ const AddTransaction = ({ transaction, update, closeNewTransaction }) => {
 
     const categories = [...new Set(data.transactions.map(existing => existing.category).filter(Boolean))].sort();
 
-    useEffect(() => {
-        const onKeyDown = (event) => {
-            if (event.key === 'Escape') {
-                closeNewTransaction();
-            }
+    const onEscape = useEffectEvent((event) => {
+        if (event.key === 'Escape') {
+            closeNewTransaction();
         }
+    });
 
-        document.addEventListener('keydown', onKeyDown);
-        return () => document.removeEventListener('keydown', onKeyDown);
-    }, [closeNewTransaction]);
+    useEffect(() => {
+        document.addEventListener('keydown', onEscape);
+        return () => document.removeEventListener('keydown', onEscape);
+    }, []);
 
     // Only close when the click both starts and ends on the backdrop, so dragging out of an input doesn't discard the form
     const onClickBackground = (event) => {
