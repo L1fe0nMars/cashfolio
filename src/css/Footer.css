@@ -3,11 +3,11 @@ footer {
 }
 
     footer p {
-        color: var(--off-white);
+        color: var(--text);
     }
 
     footer a {
-        color: #00ebeb;
+        color: var(--link);
     }
 
         footer a:hover {

@@ -1,13 +1,18 @@
 .transaction {
     margin: 1em auto;
     padding: 1em;
-    background-color: white;
+    background-color: var(--surface-raised);
     border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     cursor: pointer;
+    transition: background-color 0.15s ease-in-out;
 }
+
+    .transaction:hover {
+        background-color: var(--surface-hover);
+    }
 
 .transaction-entry {
     width: 100%;
@@ -21,6 +26,7 @@
     padding-right: 1em;
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
     text-align: left;
     gap: 0.25em;
 }
@@ -29,6 +35,28 @@
     font-weight: 600;
     font-size: 1.2em;
 }
+
+.category {
+    padding: 0.15em 0.6em;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35em;
+    font-size: 0.8em;
+    font-weight: 500;
+    color: var(--text-muted);
+    background-color: var(--chip);
+    border-radius: 999px;
+}
+
+    .category svg {
+        width: 1em;
+        height: 1em;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
 
 .transaction-info-right {
     display: flex;
@@ -41,10 +69,11 @@
 .amount {
     font-weight: 600;
     font-size: 1.2em;
+    white-space: nowrap;
 }
 
 .date {
-    color: var(--text-light);
+    color: var(--text-muted);
 }
 
 .edit-transaction,
@@ -57,7 +86,7 @@
 
     .edit-transaction svg,
     .delete-transaction svg {
-        fill: var(--off-white);
+        fill: var(--on-primary);
     }
 
 .edit-transaction {

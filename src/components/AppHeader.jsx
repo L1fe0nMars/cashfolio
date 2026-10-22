@@ -33,7 +33,9 @@ const AppHeader = () => {
                     throw new Error('Invalid backup');
                 }
 
-                saveData(importedData);
+                if (data.transactions.length === 0 || confirm('Importing will replace all of your current transactions. Continue?')) {
+                    saveData(importedData);
+                }
             } catch {
                 alert('Please select a valid CashFolio backup file.');
             }

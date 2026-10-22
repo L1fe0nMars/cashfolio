@@ -1,15 +1,25 @@
 :root {
     font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
     font-weight: 400;
+    color-scheme: dark;
 
-    --off-white: #f5f5f5;
-    --dark-mode: #1c1c1c;
-    --primary: #2236a8;
-    --text-light: #adadad;
-    --income: #0ba549;
-    --income-light: #ebffeb;
-    --expense: #f12929;
-    --expense-light: #ffeaea;
+    --bg: #0b0d1a;
+    --surface: #232326;
+    --surface-raised: #1a1a1d;
+    --surface-hover: #26262a;
+    --chip: #2e2e33;
+    --border: #45454c;
+    --text: #e8e9f0;
+    --text-muted: #a0a0a8;
+    --primary: #2f4bdb;
+    --on-primary: #ffffff;
+    --link: #00ebeb;
+    --income: #34d27b;
+    --income-card: #143d26;
+    --income-card-border: #1f6b3f;
+    --expense: #e5302f;
+    --expense-card: #4a1a1c;
+    --expense-card-border: #7a2a2d;
 }
 
 /* inter-regular - latin */
@@ -49,13 +59,13 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-    color: var(--dark-mode);
 }
 
 body {
     margin: 0;
     padding: 0;
-    background-color: var(--off-white);
+    color: var(--text);
+    background-color: var(--bg);
 }
 
 a {
@@ -68,15 +78,16 @@ button {
     cursor: pointer;
     transition: 0.15s ease-in-out;
     background-color: var(--primary);
-    color: var(--off-white);
+    color: var(--on-primary);
     border: 2px solid var(--primary);
     border-radius: 20px;
     padding: .5em 2em;
     font-weight: 500;
 }
 
-    button:focus {
-        box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+    button:focus-visible {
+        outline: 2px solid var(--text);
+        outline-offset: 2px;
     }
 
 img {
@@ -92,8 +103,10 @@ h1 {
 input,
 textarea {
     padding: 0.25em;
-    border: 1px solid var(--dark-mode);
+    border: 1px solid var(--border);
     border-radius: 5px;
+    color: var(--text);
+    background-color: var(--surface-raised);
     font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
     font-weight: 400;
     font-size: 1em;
@@ -104,6 +117,47 @@ textarea {
     max-height: 20em;
     resize: vertical;
 }
+
+select option {
+    color: var(--text);
+    background-color: var(--surface);
+}
+
+.segmented {
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    display: inline-flex;
+    width: max-content;
+}
+
+    .segmented label {
+        margin: 0.1em;
+        cursor: pointer;
+    }
+
+    /* Hidden with opacity rather than display: none so the radios stay keyboard accessible */
+    .segmented input[type="radio"] {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .segmented span {
+        padding: 0.5em 1.5em;
+        display: inline-block;
+        border-radius: 7px;
+        transition: 0.15s ease-in-out;
+    }
+
+    .segmented input[type="radio"]:checked + span {
+        color: var(--on-primary);
+        background-color: var(--primary);
+    }
+
+    .segmented input[type="radio"]:focus-visible + span {
+        outline: 2px solid var(--text);
+        outline-offset: 2px;
+    }
 
 .income {
     color: var(--income);

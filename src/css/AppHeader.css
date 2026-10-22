@@ -6,11 +6,11 @@
 }
 
     .app-header h1 {
-        color: var(--off-white);
+        color: var(--text);
     }
 
     .app-header svg {
-        fill: var(--off-white);
+        fill: var(--text);
     }
 
 .data-actions {

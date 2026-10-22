@@ -14,7 +14,7 @@ These versions are authoritative for this repository:
 - **Tooling:** Vite 8 with `@vitejs/plugin-react` 6 (`vite.config.js`). ESLint 9 with `eslint-plugin-react`, `eslint-plugin-react-hooks`, and `eslint-plugin-react-refresh`, configured as a flat config in `eslint.config.js`. Stay on ESLint 9 until `eslint-plugin-react` supports ESLint 10. `package.json` uses `"type": "module"`.
 - **State:** React Context + `useReducer`, persisted to `localStorage` (no Redux or other state library)
 - **Navigation:** None. `App.jsx` renders a single page, and modals are toggled with local component state (no router)
-- **Styling:** Plain CSS, one file per component, with CSS custom properties for colors in `src/css/index.css`. Self-hosted Inter font.
+- **Styling:** Plain CSS, one file per component, with CSS custom properties for colors in `src/css/index.css`. Shared control styles (like `.segmented`) also live there. Self-hosted Inter font.
 - **Testing:** No test framework is configured
 
 Do not upgrade React, Vite, or other packages, or add dependencies, without explicit approval. When unsure how to implement something or whether a pattern is current, check the official documentation for the baseline version (React 19, Vite 8, ESLint 9) rather than relying on recalled knowledge.
@@ -61,6 +61,7 @@ Vite does not lint during dev or build. Files containing JSX must use the `.jsx`
 - **src/components/** - One `.jsx` file per UI component
 - **src/context/** - `SaveDataContext.jsx` (provider and action helpers) and `SaveDataReducer.jsx`
 - **src/css/** - One stylesheet per component, plus `index.css` for global styles, color variables, and `@font-face` rules
+- **src/utils/** - Plain JS helpers shared across components (`formatAmount.js`)
 - **src/assets/** - SVG images and the Inter font files
 - **public/** - Static files served as-is (`robots.txt`)
 
@@ -78,16 +79,19 @@ Vite does not lint during dev or build. Files containing JSX must use the `.jsx`
 - `DeleteAllTransactions.jsx` asks for confirmation, then calls `deleteTransaction` for each transaction.
 
 **Transaction List:**
-- `TransactionList.jsx` owns all view logic: the type dropdown (all, income, expense), month and year dropdowns, search across name, description, and category, the income/expense/net totals, and whether the add modal is open. Filter state is local and not persisted.
-- The year dropdown lists only years that have transactions, and the month dropdown lists only months with transactions in the selected year.
-- `filterTransactions` sorts the `transactions` array in place, which mutates reducer state. Avoid relying on this, and fix it if touching that code.
+- `TransactionList.jsx` owns all view logic: the type segmented control (all, income, expense), month and year dropdowns, search across name, description, and category, the income/expense/net totals, whether the add modal is open, and the undo toast for single deletes. Filter state is local and not persisted.
+- The month dropdown always lists all 12 months. The year dropdown lists years that have transactions, plus the current year and the selected year. It defaults to the current year.
+- The filtered list is computed once per render into `periodTransactions` (month, year, search) and `visibleTransactions` (plus type). Totals use `periodTransactions`, so they ignore the type filter. Sorting is done on a filtered copy, never on reducer state.
+- Single deletes go through `removeTransaction`, which keeps the deleted transaction for 5 seconds so it can be restored with `addTransaction`.
 
 **Import/Export:**
-- `AppHeader.jsx` exports the full `data` object as `cashfolio-backup.json`. Import accepts any JSON file with a `transactions` array and merges it into state with `saveData`. Fields inside each transaction are not validated.
+- `AppHeader.jsx` exports the full `data` object as `cashfolio-backup.json`. Import accepts any JSON file with a `transactions` array and merges it into state with `saveData`, replacing the current transactions (it asks for confirmation first when there are existing transactions). Fields inside each transaction are not validated.
 
 **Display Settings:**
 - `Transaction.jsx` reads `currency` and `dateFormat` (`mm/dd` or `dd/mm`, shown as `mm/dd/yy` or `dd/mm/yy`, with "Today" and "Yesterday" for recent dates).
-- `darkMode` is stored but nothing uses it yet. `Settings.jsx` is an unfinished stub: no component renders it, and it imports `src/css/Settings.css`, which does not exist yet.
+- Amounts are displayed through `formatAmount` (thousands separators, optional +/- sign).
+- The app is always dark: colors are semantic tokens in `src/css/index.css` (`--bg`, `--surface`, `--surface-raised`, `--text`, `--text-muted`, `--border`, etc.) with `color-scheme: dark`. Use the tokens rather than raw colors. `arrow-down.svg` is a CSS background, so its fill is hardcoded to match `--text`.
+- `darkMode` is stored but nothing uses it (there is no theme toggle). `Settings.jsx` is an unfinished stub: no component renders it, and it imports `src/css/Settings.css`, which does not exist yet.
 
 ## Collaboration Rules
 

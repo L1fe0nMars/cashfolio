@@ -3,13 +3,9 @@
     padding: 0.5em 2em;
     border: 2px solid var(--expense);
     border-radius: 20px;
-    color: var(--off-white);
+    color: var(--on-primary);
     background-color: var(--expense);
     font-weight: 500;
-}
-
-.delete-confirm {
-    background-color: var(--off-white);
 }
 
     .delete-confirm p {
@@ -26,7 +22,7 @@
 }
 
 .confirm-delete {
-    color: var(--off-white);
+    color: var(--on-primary);
     background-color: var(--expense);
     border: 2px solid var(--expense);
 }
