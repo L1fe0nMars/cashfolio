@@ -3,8 +3,10 @@ import { SaveDataContext } from '../context/SaveDataContext';
 import Modal from './Modal';
 import '../css/AddTransaction.css';
 
-const AddTransaction = ({ transaction, closeNewTransaction }) => {
+const AddTransaction = ({ transaction, template, closeNewTransaction }) => {
     const update = Boolean(transaction);
+    // A template prefills a new transaction (used by duplicate), but the id and date stay new
+    const defaults = transaction || template;
     const today = new Date();
     const todaysDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
 
@@ -30,19 +32,19 @@ const AddTransaction = ({ transaction, closeNewTransaction }) => {
 
     return (
         <Modal className="new-transaction" onClose={closeNewTransaction} initialFocus={amountInput}>
-            <h3>{update ? 'Update' : 'Add New'} Transaction</h3>
+            <h3>{update ? 'Update' : (template ? 'Duplicate' : 'Add New')} Transaction</h3>
             <form id="new-transaction-form" action={submitTransaction}>
                 <div className="form-section">
                     <label htmlFor="amount">Amount</label>
-                    <input ref={amountInput} id="amount" name="amount" type="number" defaultValue={transaction?.amount} min="0.01" step="0.01" placeholder="0.00" required />
+                    <input ref={amountInput} id="amount" name="amount" type="number" defaultValue={defaults?.amount} min="0.01" step="0.01" placeholder="0.00" required />
                 </div>
                 <div className="form-type segmented">
                     <label>
-                        <input type="radio" name="type" value="income" defaultChecked={transaction?.type === 'income'} />
+                        <input type="radio" name="type" value="income" defaultChecked={defaults?.type === 'income'} />
                         <span>Income</span>
                     </label>
                     <label>
-                        <input type="radio" name="type" value="expense" defaultChecked={transaction?.type !== 'income'} />
+                        <input type="radio" name="type" value="expense" defaultChecked={defaults?.type !== 'income'} />
                         <span>Expense</span>
                     </label>
                 </div>
@@ -52,15 +54,15 @@ const AddTransaction = ({ transaction, closeNewTransaction }) => {
                 </div>
                 <div className="form-section">
                     <label htmlFor="name">Name</label>
-                    <input id="name" name="name" type="text" defaultValue={transaction?.name} placeholder="Transaction name" required />
+                    <input id="name" name="name" type="text" defaultValue={defaults?.name} placeholder="Transaction name" required />
                 </div>
                 <div className="form-section">
                     <label htmlFor="desc">Description</label>
-                    <textarea id="desc" name="desc" rows="2" defaultValue={transaction?.desc} placeholder="Description"></textarea>
+                    <textarea id="desc" name="desc" rows="2" defaultValue={defaults?.desc} placeholder="Description"></textarea>
                 </div>
                 <div className="form-section">
                     <label htmlFor="category">Category</label>
-                    <input id="category" type="text" name="category" list="category-options" defaultValue={transaction?.category} placeholder="Category" />
+                    <input id="category" type="text" name="category" list="category-options" defaultValue={defaults?.category} placeholder="Category" />
                     <datalist id="category-options">
                         {categories.map(option => <option key={option} value={option} />)}
                     </datalist>

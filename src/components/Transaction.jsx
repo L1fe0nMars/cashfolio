@@ -8,11 +8,13 @@ const Transaction = ({ transaction, onDelete }) => {
     const { data } = useContext(SaveDataContext);
     const [showOptions, setShowOptions] = useState(false);
     const [editTransaction, setEditTransaction] = useState(false);
+    const [duplicateTransaction, setDuplicateTransaction] = useState(false);
     const { currency } = data;
 
     return (
         <li className="transaction" onClick={() => setShowOptions(!showOptions)}>
             {editTransaction && <AddTransaction closeNewTransaction={() => setEditTransaction(false)} transaction={transaction} />}
+            {duplicateTransaction && <AddTransaction closeNewTransaction={() => setDuplicateTransaction(false)} template={transaction} />}
 
             <div className="transaction-entry">
                 <div className="transaction-info">
@@ -38,6 +40,12 @@ const Transaction = ({ transaction, onDelete }) => {
                 <button className="edit-transaction" onClick={() => setEditTransaction(true)} title="Edit transaction" aria-label="Edit transaction">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                         <path d="M22.853,1.148a3.626,3.626,0,0,0-5.124,0L1.465,17.412A4.968,4.968,0,0,0,0,20.947V23a1,1,0,0,0,1,1H3.053a4.966,4.966,0,0,0,3.535-1.464L22.853,6.271A3.626,3.626,0,0,0,22.853,1.148ZM5.174,21.122A3.022,3.022,0,0,1,3.053,22H2V20.947a2.98,2.98,0,0,1,.879-2.121L15.222,6.483l2.3,2.3ZM21.438,4.857,18.932,7.364l-2.3-2.295,2.507-2.507a1.623,1.623,0,1,1,2.295,2.3Z"/>
+                    </svg>
+                </button>
+                <button className="duplicate-transaction" onClick={() => setDuplicateTransaction(true)} title="Duplicate transaction" aria-label="Duplicate transaction">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                        <path d="M15,20H5a5.006,5.006,0,0,1-5-5V5A5.006,5.006,0,0,1,5,0H15a5.006,5.006,0,0,1,5,5V15A5.006,5.006,0,0,1,15,20ZM5,2A3,3,0,0,0,2,5V15a3,3,0,0,0,3,3H15a3,3,0,0,0,3-3V5a3,3,0,0,0-3-3Z"/>
+                        <path d="M24,6V19a5.006,5.006,0,0,1-5,5H6a1,1,0,0,1,0-2H19a3,3,0,0,0,3-3V6a1,1,0,0,1,2,0Z"/>
                     </svg>
                 </button>
                 <button className="delete-transaction" onClick={onDelete} title="Delete transaction" aria-label="Delete transaction">

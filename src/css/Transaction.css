@@ -73,6 +73,7 @@
 }
 
 .edit-transaction,
+.duplicate-transaction,
 .delete-transaction {
     margin-left: 1em;
     padding: 0.5em;
@@ -81,12 +82,17 @@
 }
 
     .edit-transaction svg,
+    .duplicate-transaction svg,
     .delete-transaction svg {
         fill: var(--on-primary);
     }
 
 .edit-transaction {
     background-color: var(--primary);
+}
+
+.duplicate-transaction {
+    background-color: var(--secondary);
 }
 
 .delete-transaction {
