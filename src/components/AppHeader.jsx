@@ -2,6 +2,27 @@ import { useContext, useRef } from 'react';
 import { SaveDataContext } from '../context/SaveDataContext';
 import '../css/AppHeader.css';
 
+const isValidTransaction = (transaction) =>
+    typeof transaction === 'object'
+    && transaction !== null
+    && typeof transaction.id === 'string'
+    && (transaction.type === 'income' || transaction.type === 'expense')
+    && typeof transaction.name === 'string'
+    && typeof transaction.desc === 'string'
+    && typeof transaction.category === 'string'
+    && typeof transaction.date === 'string'
+    && /^\d{4}-\d{2}-\d{2}$/.test(transaction.date)
+    && Number.isFinite(transaction.amount)
+    && transaction.amount > 0;
+
+const isValidBackup = (backup) =>
+    typeof backup === 'object'
+    && backup !== null
+    && Array.isArray(backup.transactions)
+    && backup.transactions.every(isValidTransaction)
+    && typeof backup.currency === 'string'
+    && typeof backup.dateFormat === 'string';
+
 const AppHeader = () => {
     const { data, saveData } = useContext(SaveDataContext);
     const fileInput = useRef(null);
@@ -29,12 +50,13 @@ const AppHeader = () => {
             try {
                 const importedData = JSON.parse(reader.result);
 
-                if (!Array.isArray(importedData.transactions)) {
+                if (!isValidBackup(importedData)) {
                     throw new Error('Invalid backup');
                 }
 
                 if (data.transactions.length === 0 || confirm('Importing will replace all of your current transactions. Continue?')) {
-                    saveData(importedData);
+                    const { transactions, currency, dateFormat } = importedData;
+                    saveData({ transactions, currency, dateFormat });
                 }
             } catch {
                 alert('Please select a valid CashFolio backup file.');

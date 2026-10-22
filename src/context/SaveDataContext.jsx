@@ -10,9 +10,25 @@ const initialData = {
 
 export const SaveDataContext = createContext(initialData);
 
+const loadData = () => {
+    try {
+        const savedData = JSON.parse(localStorage.getItem('data'));
+        if (!savedData) return initialData;
+
+        return {
+            ...savedData,
+            // Transactions created before UUIDs have numeric ids, which import rejects, so upgrade them for future exports
+            transactions: savedData.transactions.map(transaction =>
+                typeof transaction.id === 'string' ? transaction : { ...transaction, id: crypto.randomUUID() }
+            )
+        };
+    } catch {
+        return initialData;
+    }
+}
+
 export const SaveDataProvider = ({ children }) => {
-    const savedData = JSON.parse(localStorage.getItem('data'));
-    const [data, dispatch] = useReducer(SaveDataReducer, savedData || initialData);
+    const [data, dispatch] = useReducer(SaveDataReducer, null, loadData);
 
     useEffect(() => {
         localStorage.setItem('data', JSON.stringify(data));

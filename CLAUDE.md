@@ -69,7 +69,7 @@ Vite does not lint during dev or build. Files containing JSX must use the `.jsx`
 
 **Save Data:**
 - `SaveDataContext` holds a single `data` object in a `useReducer` and writes it to `localStorage['data']` on every change: `{ transactions: [], darkMode: false, currency: '$', dateFormat: 'mm/dd' }`.
-- On load, saved data replaces `initialData` entirely. Unlike a backfill, keys added to `initialData` later will be missing for users who already have saved data, so any new key needs a fallback where it is read (or a backfill added to the provider).
+- On load, saved data replaces `initialData` entirely (unreadable saved data falls back to `initialData`). Unlike a backfill, keys added to `initialData` later will be missing for users who already have saved data, so any new key needs a fallback where it is read (or a backfill added to the provider).
 - Action helpers from the context: `addTransaction` (prepends), `updateTransaction` (merges by `id`), `deleteTransaction` (by `id`), and `saveData(partial)`, which shallow-merges into `data`.
 
 **Transactions:**
@@ -85,7 +85,7 @@ Vite does not lint during dev or build. Files containing JSX must use the `.jsx`
 - Single deletes go through `removeTransaction`, which keeps the deleted transaction for 5 seconds so it can be restored with `addTransaction`.
 
 **Import/Export:**
-- `AppHeader.jsx` exports the full `data` object as `cashfolio-backup.json`. Import accepts any JSON file with a `transactions` array and merges it into state with `saveData`, replacing the current transactions (it asks for confirmation first when there are existing transactions). Fields inside each transaction are not validated.
+- `AppHeader.jsx` exports the full `data` object as `cashfolio-backup.json`. Import only accepts backups in the current format: `currency` and `dateFormat` strings plus a `transactions` array where every transaction matches the current shape (string `id`, valid `type`, string `name`/`desc`/`category`, `YYYY-MM-DD` date, positive number `amount`). Any invalid entry rejects the whole file. Only `transactions`, `currency`, and `dateFormat` are merged into state with `saveData`, replacing the current transactions (it asks for confirmation first when there are existing transactions).
 
 **Display Settings:**
 - `TransactionList.jsx` groups rows under sticky date headers that show the day's net. Headers use `formatDate` with `dateFormat` (`mm/dd` shows "Sat, Oct 18", `dd/mm` shows "Sat, 18 Oct", with "Today" and "Yesterday" for recent dates). Rows themselves show no date. A label under the total names the period and any active search.
@@ -116,7 +116,7 @@ Vite does not lint during dev or build. Files containing JSX must use the `.jsx`
 ## Data and Persistence
 
 - All persisted state goes through `SaveDataContext`. Do not read or write `localStorage` directly from components.
-- Renaming or removing a key in the save data, or changing the transaction shape, affects existing users' saved data and their exported backups. Treat these changes as needing approval, and keep import compatible with older backups.
+- Renaming or removing a key in the save data, or changing the transaction shape, affects existing users' saved data and their exported backups. Treat these changes as needing approval. Import does not support older backup formats. Instead, `SaveDataContext` upgrades saved data on load (currently: numeric transaction ids get a UUID) so exports always match the current format.
 - The footer warns users not to enter sensitive information. Data never leaves the browser except through a user-initiated export, so do not add network requests, analytics, or third-party scripts without approval.
 
 ## Simplicity and Efficiency
