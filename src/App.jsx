@@ -2,6 +2,7 @@ import { SaveDataProvider } from './context/SaveDataContext';
 import AppHeader from './components/AppHeader';
 import TransactionList from './components/TransactionList';
 import Footer from './components/Footer';
+import ScrollToTop from './components/ScrollToTop';
 import './css/App.css';
 
 const App = () => {
@@ -11,6 +12,7 @@ const App = () => {
                 <AppHeader />
                 <TransactionList />
                 <Footer />
+                <ScrollToTop />
             </SaveDataProvider>
         </div>
     );

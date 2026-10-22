@@ -152,10 +152,35 @@ select {
         fill: var(--text-muted);
     }
 
+    .search-field {
+        flex: 1;
+        position: relative;
+    }
+
     .search input {
         width: 100%;
         padding: 0.4em 0.6em;
     }
+
+    .search-field:has(.clear-search) input {
+        padding-right: 2em;
+    }
+
+    .search .clear-search {
+        padding: 0.25em;
+        position: absolute;
+        top: 50%;
+        right: 0.3em;
+        transform: translateY(-50%);
+        display: flex;
+        background-color: transparent;
+        border: none;
+        border-radius: 5px;
+    }
+
+        .search .clear-search:hover svg {
+            fill: var(--text);
+        }
 
 .no-transactions {
     padding: 3em 0 2em 0;

@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect, useRef } from 'react';
 import { SaveDataContext } from '../context/SaveDataContext';
 import Transaction from './Transaction';
 import AddTransaction from './AddTransaction';
@@ -36,6 +36,7 @@ const TransactionList = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [newTransaction, setNewTransaction] = useState(false);
     const [deletedTransaction, setDeletedTransaction] = useState(null);
+    const searchInput = useRef(null);
 
     useEffect(() => {
         if (!deletedTransaction) return;
@@ -83,11 +84,16 @@ const TransactionList = () => {
     const period = dropdownMonth
         ? `${months.find(month => month.value === dropdownMonth).name} ${dropdownYear}`
         : dropdownYear;
-    const periodLabel = search ? `${period} · matching "${searchTerm.trim()}"` : period;
+    const periodLabel = search ? `${period} · Matching "${searchTerm.trim()}"` : period;
 
     const removeTransaction = (transaction) => {
         deleteTransaction(transaction.id);
         setDeletedTransaction(transaction);
+    }
+
+    const clearSearch = () => {
+        setSearchTerm('');
+        searchInput.current.focus();
     }
 
     const undoDelete = () => {
@@ -156,7 +162,16 @@ const TransactionList = () => {
                         <svg xmlns="http://www.w3.org/2000/svg" id="Outline" viewBox="0 0 24 24" width="24" height="24">
                             <path d="M23.707,22.293l-5.969-5.969a10.016,10.016,0,1,0-1.414,1.414l5.969,5.969a1,1,0,0,0,1.414-1.414ZM10,18a8,8,0,1,1,8-8A8.009,8.009,0,0,1,10,18Z"/>
                         </svg>
-                        <input value={searchTerm} onChange={(event) => setSearchTerm(event.target.value)} placeholder="Search name, description, category" aria-label="Search transactions" />
+                        <div className="search-field">
+                            <input ref={searchInput} value={searchTerm} onChange={(event) => setSearchTerm(event.target.value)} placeholder="Search name, description, category" aria-label="Search transactions" />
+                            {searchTerm && (
+                                <button type="button" className="clear-search" onClick={clearSearch} aria-label="Clear search">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16">
+                                        <path d="M18.71,5.29a1,1,0,0,0-1.42,0L12,10.59,6.71,5.29A1,1,0,0,0,5.29,6.71L10.59,12,5.29,17.29a1,1,0,1,0,1.42,1.42L12,13.41l5.29,5.3a1,1,0,0,0,1.42-1.42L13.41,12l5.3-5.29A1,1,0,0,0,18.71,5.29Z"/>
+                                    </svg>
+                                </button>
+                            )}
+                        </div>
                     </div>
                 </div>
 
