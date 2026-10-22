@@ -1,5 +1,5 @@
 .transaction {
-    margin: 1em auto;
+    margin: 0.6em auto;
     padding: 1em;
     background-color: var(--surface-raised);
     border-radius: 10px;
@@ -70,10 +70,6 @@
     font-weight: 600;
     font-size: 1.2em;
     white-space: nowrap;
-}
-
-.date {
-    color: var(--text-muted);
 }
 
 .edit-transaction,

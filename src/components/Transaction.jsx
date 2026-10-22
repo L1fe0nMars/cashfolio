@@ -4,38 +4,11 @@ import AddTransaction from './AddTransaction';
 import formatAmount from '../utils/formatAmount';
 import '../css/Transaction.css';
 
-const formatDate = (dateString, dateFormat) => {
-    const date = new Date(dateString.replace(/-/g, '/'));
-    const today = new Date();
-    const yesterday = new Date(today);
-    yesterday.setDate(today.getDate() - 1);
-    
-    if (date.toDateString() === today.toDateString()) {
-        return 'Today';
-    }
-    else if (date.toDateString() === yesterday.toDateString()) {
-        return 'Yesterday';
-    }
-    else {
-        const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
-        const formattedDate = date.toLocaleDateString('en-US', options);
-        const [mm, dd, yyyy] = formattedDate.split('/');
-        const yy = yyyy.slice(-2);
-        
-        if (dateFormat === 'mm/dd') {
-            return `${mm}/${dd}/${yy}`;
-        }
-        else {
-            return `${dd}/${mm}/${yy}`;
-        }
-    }
-}
-
 const Transaction = ({ transaction, onDelete }) => {
     const { data } = useContext(SaveDataContext);
     const [showOptions, setShowOptions] = useState(false);
     const [editTransaction, setEditTransaction] = useState(false);
-    const { currency, dateFormat } = data;
+    const { currency } = data;
 
     const toggleEditTransaction = (display) => {
         setEditTransaction(display);
@@ -68,9 +41,7 @@ const Transaction = ({ transaction, onDelete }) => {
                 <div className="transaction-info-right">
                     <span className={`amount ${transaction.type}`}>
                         {formatAmount(transaction.type === 'expense' ? -transaction.amount : transaction.amount, currency, true)}
-                    </span>
-                    <span className="date">{formatDate(transaction.date, dateFormat)}</span>
-                </div>
+                    </span>                </div>
             </div>
             {showOptions && <>
                 <button className="edit-transaction" onClick={() => setEditTransaction(true)} title="Edit transaction" aria-label="Edit transaction">

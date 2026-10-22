@@ -4,6 +4,7 @@ import Transaction from './Transaction';
 import AddTransaction from './AddTransaction';
 import DeleteAllTransactions from './DeleteAllTransactions';
 import formatAmount from '../utils/formatAmount';
+import formatDate from '../utils/formatDate';
 import '../css/TransactionList.css';
 
 const months = Array.from({ length: 12 }, (_, index) => ({
@@ -17,11 +18,17 @@ const typeOptions = [
     { value: 'expense', label: 'Expenses' }
 ];
 
+const netOf = (transactions) => Math.round(transactions.reduce((total, transaction) => {
+    return transaction.type === 'income' ? total + transaction.amount : total - transaction.amount;
+}, 0) * 100) / 100;
+
+const amountClass = (amount) => amount > 0 ? 'income' : (amount < 0 ? 'expense' : '');
+
 const TransactionList = () => {
     const currentYear = String(new Date().getFullYear());
 
     const { data, addTransaction, deleteTransaction } = useContext(SaveDataContext);
-    const { transactions, currency } = data;
+    const { transactions, currency, dateFormat } = data;
 
     const [typeFilter, setTypeFilter] = useState('all');
     const [dropdownMonth, setDropdownMonth] = useState('');
@@ -58,8 +65,25 @@ const TransactionList = () => {
 
     const incomeTotal = sumOf('income');
     const expenseTotal = sumOf('expense');
-    const netTotal = Math.round((incomeTotal - expenseTotal) * 100) / 100;
-    const netClass = netTotal > 0 ? 'income' : (netTotal < 0 ? 'expense' : '');
+    const netTotal = netOf(periodTransactions);
+
+    // visibleTransactions is sorted by date, so each day's transactions are already adjacent
+    const dateGroups = [];
+    for (const transaction of visibleTransactions) {
+        const lastGroup = dateGroups[dateGroups.length - 1];
+
+        if (lastGroup?.date === transaction.date) {
+            lastGroup.transactions.push(transaction);
+        }
+        else {
+            dateGroups.push({ date: transaction.date, transactions: [transaction] });
+        }
+    }
+
+    const period = dropdownMonth
+        ? `${months.find(month => month.value === dropdownMonth).name} ${dropdownYear}`
+        : dropdownYear;
+    const periodLabel = search ? `${period} · matching "${searchTerm.trim()}"` : period;
 
     const removeTransaction = (transaction) => {
         deleteTransaction(transaction.id);
@@ -75,7 +99,8 @@ const TransactionList = () => {
         <div className="transaction-home">
             <div className="transaction-header">
                 <h2>Total</h2>
-                <span className={netClass}>{formatAmount(netTotal, currency, true)}</span>
+                <p className="period-label">{periodLabel}</p>
+                <span className={amountClass(netTotal)}>{formatAmount(netTotal, currency, true)}</span>
                 <div className="income-expense">
                     <div className="income-total">
                         <h2>Income</h2>
@@ -139,11 +164,25 @@ const TransactionList = () => {
 
                 <ul>
                     {
-                        visibleTransactions.length === 0
+                        dateGroups.length === 0
                         ? <li className="no-transactions">No transactions found</li>
-                        : visibleTransactions.map(transaction => (
-                            <Transaction key={transaction.id} transaction={transaction} onDelete={() => removeTransaction(transaction)} />
-                        ))
+                        : dateGroups.map(group => {
+                            const dayNet = netOf(group.transactions);
+
+                            return (
+                                <li key={group.date} className="date-group">
+                                    <div className="date-header">
+                                        <span>{formatDate(group.date, dateFormat)}</span>
+                                        <span className={amountClass(dayNet)}>{formatAmount(dayNet, currency, true)}</span>
+                                    </div>
+                                    <ul>
+                                        {group.transactions.map(transaction => (
+                                            <Transaction key={transaction.id} transaction={transaction} onDelete={() => removeTransaction(transaction)} />
+                                        ))}
+                                    </ul>
+                                </li>
+                            );
+                        })
                     }
                 </ul>
 

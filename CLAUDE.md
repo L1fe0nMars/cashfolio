@@ -61,7 +61,7 @@ Vite does not lint during dev or build. Files containing JSX must use the `.jsx`
 - **src/components/** - One `.jsx` file per UI component
 - **src/context/** - `SaveDataContext.jsx` (provider and action helpers) and `SaveDataReducer.jsx`
 - **src/css/** - One stylesheet per component, plus `index.css` for global styles, color variables, and `@font-face` rules
-- **src/utils/** - Plain JS helpers shared across components (`formatAmount.js`)
+- **src/utils/** - Plain JS helpers shared across components (`formatAmount.js`, `formatDate.js`)
 - **src/assets/** - SVG images and the Inter font files
 - **public/** - Static files served as-is (`robots.txt`)
 
@@ -88,7 +88,7 @@ Vite does not lint during dev or build. Files containing JSX must use the `.jsx`
 - `AppHeader.jsx` exports the full `data` object as `cashfolio-backup.json`. Import accepts any JSON file with a `transactions` array and merges it into state with `saveData`, replacing the current transactions (it asks for confirmation first when there are existing transactions). Fields inside each transaction are not validated.
 
 **Display Settings:**
-- `Transaction.jsx` reads `currency` and `dateFormat` (`mm/dd` or `dd/mm`, shown as `mm/dd/yy` or `dd/mm/yy`, with "Today" and "Yesterday" for recent dates).
+- `TransactionList.jsx` groups rows under sticky date headers that show the day's net. Headers use `formatDate` with `dateFormat` (`mm/dd` shows "Sat, Oct 18", `dd/mm` shows "Sat, 18 Oct", with "Today" and "Yesterday" for recent dates). Rows themselves show no date. A label under the total names the period and any active search.
 - Amounts are displayed through `formatAmount` (thousands separators, optional +/- sign).
 - The app is always dark: colors are semantic tokens in `src/css/index.css` (`--bg`, `--surface`, `--surface-raised`, `--text`, `--text-muted`, `--border`, etc.) with `color-scheme: dark`. Use the tokens rather than raw colors. `arrow-down.svg` is a CSS background, so its fill is hardcoded to match `--text`.
 - `darkMode` is stored but nothing uses it (there is no theme toggle). `Settings.jsx` is an unfinished stub: no component renders it, and it imports `src/css/Settings.css`, which does not exist yet.
@@ -121,6 +121,6 @@ Vite does not lint during dev or build. Files containing JSX must use the `.jsx`
 
 ## Simplicity and Efficiency
 
-- Before adding a helper, check whether an existing component already has the logic (for example, `formatDate` in `Transaction.jsx`) and reuse or extract it instead of duplicating it.
+- Before adding a helper, check whether an existing component already has the logic (for example, `formatDate` and `formatAmount` in `src/utils/`) and reuse or extract it instead of duplicating it.
 - When the same multi-line logic appears in two components, extract it into a shared helper. Don't extract one-liners.
 - Avoid recomputing the same filtered list several times in one render when a single computed value would do.
