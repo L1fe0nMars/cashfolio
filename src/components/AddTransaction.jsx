@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useContext, useRef } from 'react';
 import { SaveDataContext } from '../context/SaveDataContext';
 import Modal from './Modal';
 import '../css/AddTransaction.css';
@@ -8,27 +8,20 @@ const AddTransaction = ({ transaction, closeNewTransaction }) => {
     const today = new Date();
     const todaysDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
 
-    const [name, setName] = useState(transaction?.name || '');
-    const [desc, setDesc] = useState(transaction?.desc || '');
-    const [category, setCategory] = useState(transaction?.category || '');
-    const [type, setType] = useState(transaction?.type || 'expense');
-    const [date, setDate] = useState(transaction?.date || todaysDate);
-    const [amount, setAmount] = useState(transaction?.amount || '');
     const { data, addTransaction, updateTransaction } = useContext(SaveDataContext);
+    const amountInput = useRef(null);
 
     const categories = [...new Set(data.transactions.map(existing => existing.category).filter(Boolean))].sort();
 
-    const onSubmit = (event) => {
-        event.preventDefault();
-
+    const submitTransaction = (formData) => {
         const newTransaction = {
             id: transaction?.id || crypto.randomUUID(),
-            type,
-            name,
-            desc,
-            date,
-            amount: Math.abs(Number(amount)),
-            category
+            type: formData.get('type'),
+            name: formData.get('name'),
+            desc: formData.get('desc'),
+            date: formData.get('date'),
+            amount: Math.abs(Number(formData.get('amount'))),
+            category: formData.get('category')
         }
 
         update ? updateTransaction(newTransaction) : addTransaction(newTransaction);
@@ -36,38 +29,38 @@ const AddTransaction = ({ transaction, closeNewTransaction }) => {
     }
 
     return (
-        <Modal className="new-transaction" onClose={closeNewTransaction}>
+        <Modal className="new-transaction" onClose={closeNewTransaction} initialFocus={amountInput}>
             <h3>{update ? 'Update' : 'Add New'} Transaction</h3>
-            <form id="new-transaction-form" onSubmit={onSubmit}>
+            <form id="new-transaction-form" action={submitTransaction}>
                 <div className="form-section">
                     <label htmlFor="amount">Amount</label>
-                    <input id="amount" type="number" value={amount} onChange={(event) => setAmount(event.target.value)} min="0.01" step="0.01" placeholder="0.00" required autoFocus />
+                    <input ref={amountInput} id="amount" name="amount" type="number" defaultValue={transaction?.amount} min="0.01" step="0.01" placeholder="0.00" required />
                 </div>
                 <div className="form-type segmented">
                     <label>
-                        <input type="radio" name="type" value="income" onChange={(event) => setType(event.target.value)} checked={type === 'income'} />
+                        <input type="radio" name="type" value="income" defaultChecked={transaction?.type === 'income'} />
                         <span>Income</span>
                     </label>
                     <label>
-                        <input type="radio" name="type" value="expense" onChange={(event) => setType(event.target.value)} checked={type === 'expense'} />
+                        <input type="radio" name="type" value="expense" defaultChecked={transaction?.type !== 'income'} />
                         <span>Expense</span>
                     </label>
                 </div>
                 <div className="form-section">
                     <label htmlFor="date">Date</label>
-                    <input id="date" type="date" value={date} onChange={(event) => setDate(event.target.value)} min="2024-01-01" max={todaysDate} required />
+                    <input id="date" name="date" type="date" defaultValue={transaction?.date || todaysDate} min="2024-01-01" max={todaysDate} required />
                 </div>
                 <div className="form-section">
                     <label htmlFor="name">Name</label>
-                    <input id="name" type="text" value={name} onChange={(event) => setName(event.target.value)} placeholder="Transaction name" required />
+                    <input id="name" name="name" type="text" defaultValue={transaction?.name} placeholder="Transaction name" required />
                 </div>
                 <div className="form-section">
                     <label htmlFor="desc">Description</label>
-                    <textarea id="desc" name="desc" rows="2" value={desc} onChange={(event) => setDesc(event.target.value)} placeholder="Description"></textarea>
+                    <textarea id="desc" name="desc" rows="2" defaultValue={transaction?.desc} placeholder="Description"></textarea>
                 </div>
                 <div className="form-section">
                     <label htmlFor="category">Category</label>
-                    <input id="category" type="text" list="category-options" value={category} onChange={(event) => setCategory(event.target.value)} placeholder="Category" />
+                    <input id="category" type="text" name="category" list="category-options" defaultValue={transaction?.category} placeholder="Category" />
                     <datalist id="category-options">
                         {categories.map(option => <option key={option} value={option} />)}
                     </datalist>

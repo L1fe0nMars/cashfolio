@@ -1,18 +1,20 @@
-.background,
-.modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+/* The dialog is a transparent full-width wrapper, so any click outside the .modal panel lands on the dialog itself and counts as a backdrop click */
+.modal-dialog {
+    margin: auto;
+    padding: 0;
     width: 100%;
-}
-
-.background {
-    z-index: 10;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
+    max-width: 100%;
+    border: none;
+    outline: none;
+    color: var(--text);
+    background-color: transparent;
+    /* Resets the pointer cursor inherited when a modal is rendered inside a transaction row */
     cursor: default;
 }
+
+    .modal-dialog::backdrop {
+        background-color: rgba(0, 0, 0, 0.6);
+    }
 
 .modal {
     margin: 0 auto;

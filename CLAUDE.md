@@ -13,7 +13,7 @@ These versions are authoritative for this repository:
 - **Runtime:** React 19.3 and React DOM 19.3 (`createRoot`, `StrictMode`), plain JavaScript/JSX (no TypeScript)
 - **Tooling:** Vite 8 with `@vitejs/plugin-react` 6 (`vite.config.js`). ESLint 9 with `eslint-plugin-react`, `eslint-plugin-react-hooks`, and `eslint-plugin-react-refresh`, configured as a flat config in `eslint.config.js`. Stay on ESLint 9 until `eslint-plugin-react` supports ESLint 10. `package.json` uses `"type": "module"`.
 - **State:** React Context + `useReducer`, persisted to `localStorage` (no Redux or other state library)
-- **Navigation:** None. `App.jsx` renders a single page, and modals are toggled with local component state (no router). Every modal renders through `Modal.jsx`, which owns the backdrop, Escape to close, and closing only when a click both starts and ends on the backdrop
+- **Navigation:** None. `App.jsx` renders a single page, and modals are toggled with local component state (no router). Every modal renders through `Modal.jsx`, a native `<dialog>` opened with `showModal()` (focus is trapped and returns to the opener on close). It handles Escape through the `cancel` event, closes only when a click both starts and ends on the backdrop, and stops click propagation so modals can sit inside clickable elements. Use its `initialFocus` ref prop instead of `autoFocus`, which fires before the dialog opens
 - **Styling:** Plain CSS, one file per component, with CSS custom properties for colors in `src/css/index.css`. Shared control styles (like `.segmented`) also live there. Self-hosted Inter font.
 - **Testing:** No test framework is configured
 
@@ -75,7 +75,7 @@ Vite does not lint during dev or build. Files containing JSX must use the `.jsx`
 **Transactions:**
 - Shape: `{ id: crypto.randomUUID(), type: 'income' | 'expense', name, desc, category, date: 'YYYY-MM-DD', amount }`. `amount` is always stored as a positive number, and its sign comes from `type`.
 - Dates are stored as `YYYY-MM-DD` strings. Month and year filtering match prefixes like `` `${year}-${month}` ``. When parsing, the code replaces `-` with `/` so `new Date()` treats the date as local time rather than UTC.
-- `AddTransaction.jsx` handles both creating and editing. Passing a `transaction` switches it to edit mode. The date input allows 2024-01-01 through today.
+- `AddTransaction.jsx` handles both creating and editing. Passing a `transaction` switches it to edit mode. The form is uncontrolled (`defaultValue`) and submits through a React form action that reads `FormData`, so every field needs a `name` attribute. The date input allows 2024-01-01 through today.
 - `DeleteAllTransactions.jsx` asks for confirmation, then clears the list with `saveData({ transactions: [] })`.
 
 **Transaction List:**

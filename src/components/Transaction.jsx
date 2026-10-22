@@ -10,14 +10,8 @@ const Transaction = ({ transaction, onDelete }) => {
     const [editTransaction, setEditTransaction] = useState(false);
     const { currency } = data;
 
-    const onClickTransaction = () => {
-        if (!editTransaction) {
-            setShowOptions(!showOptions);
-        }
-    }
-
     return (
-        <li className="transaction" onClick={onClickTransaction}>
+        <li className="transaction" onClick={() => setShowOptions(!showOptions)}>
             {editTransaction && <AddTransaction closeNewTransaction={() => setEditTransaction(false)} transaction={transaction} />}
 
             <div className="transaction-entry">
