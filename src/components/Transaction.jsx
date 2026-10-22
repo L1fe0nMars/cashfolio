@@ -2,14 +2,15 @@ import { useState, useContext } from 'react';
 import { SaveDataContext } from '../context/SaveDataContext';
 import AddTransaction from './AddTransaction';
 import formatAmount from '../utils/formatAmount';
+import formatDate from '../utils/formatDate';
 import '../css/Transaction.css';
 
-const Transaction = ({ transaction, onDelete }) => {
+const Transaction = ({ transaction, onDelete, showDate }) => {
     const { data } = useContext(SaveDataContext);
     const [showOptions, setShowOptions] = useState(false);
     const [editTransaction, setEditTransaction] = useState(false);
     const [duplicateTransaction, setDuplicateTransaction] = useState(false);
-    const { currency } = data;
+    const { currency, dateFormat } = data;
 
     return (
         <li className="transaction" onClick={() => setShowOptions(!showOptions)}>
@@ -34,6 +35,7 @@ const Transaction = ({ transaction, onDelete }) => {
                     <span className={`amount ${transaction.type}`}>
                         {formatAmount(transaction.type === 'expense' ? -transaction.amount : transaction.amount, currency, true)}
                     </span>
+                    {showDate && <span className="transaction-date">{formatDate(transaction.date, dateFormat)}</span>}
                 </div>
             </div>
             {showOptions && <>

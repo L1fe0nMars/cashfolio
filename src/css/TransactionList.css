@@ -86,7 +86,7 @@
 
 .filter-options {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 1em;
@@ -107,21 +107,36 @@ select {
 }
 
 .date-period {
-    width: max-content;
     display: flex;
     flex-wrap: wrap;
     gap: 1em;
 }
 
-    .date-period label {
-        font-weight: 700;
-        font-size: 1.3em;
+    .date-period > div {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.3em;
     }
 
+    .date-period label {
+        font-size: 0.8em;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+    }
+
+    /* Matches the search input instead of the large title-style select */
     .date-period select {
-        padding-right: 1.3em;
-        font-size: 1.3em;
+        padding: 0.4em 2em 0.4em 0.6em;
+        font-size: 1em;
         font-weight: 400;
+        border: 1px solid var(--border);
+        border-radius: 5px;
+        background-color: var(--surface-raised);
+        background-position: right 0.5em center;
+        background-size: 1.25em;
     }
 
 .add-transaction-btn {
@@ -141,6 +156,7 @@ select {
 
 .search {
     flex: 1;
+    min-width: 14em;
     max-width: 18em;
     display: flex;
     align-items: center;

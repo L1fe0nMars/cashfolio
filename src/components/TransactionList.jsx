@@ -18,6 +18,20 @@ const typeOptions = [
     { value: 'expense', label: 'Expenses' }
 ];
 
+const sortOptions = [
+    { value: 'newest', label: 'Newest' },
+    { value: 'oldest', label: 'Oldest' },
+    { value: 'highest', label: 'Highest amount' },
+    { value: 'lowest', label: 'Lowest amount' }
+];
+
+const sortComparators = {
+    newest: (a, b) => b.date.localeCompare(a.date),
+    oldest: (a, b) => a.date.localeCompare(b.date),
+    highest: (a, b) => b.amount - a.amount || b.date.localeCompare(a.date),
+    lowest: (a, b) => a.amount - b.amount || b.date.localeCompare(a.date)
+};
+
 const roundCents = (amount) => Math.round(amount * 100) / 100;
 
 const netOf = (transactions) => roundCents(transactions.reduce((total, transaction) => {
@@ -33,6 +47,7 @@ const TransactionList = () => {
     const { transactions, currency, dateFormat } = data;
 
     const [typeFilter, setTypeFilter] = useState('all');
+    const [sortOrder, setSortOrder] = useState('newest');
     const [dropdownMonth, setDropdownMonth] = useState('');
     const [dropdownYear, setDropdownYear] = useState(currentYear);
     const [searchTerm, setSearchTerm] = useState('');
@@ -55,12 +70,11 @@ const TransactionList = () => {
     const periodTransactions = transactions
         .filter(transaction => transaction.date.startsWith(`${dropdownYear}-${dropdownMonth}`))
         .filter(transaction => [transaction.name, transaction.desc, transaction.category]
-            .some(field => (field || '').toLowerCase().includes(search)))
-        .sort((a, b) => b.date.localeCompare(a.date));
+            .some(field => (field || '').toLowerCase().includes(search)));
 
-    const visibleTransactions = typeFilter === 'all'
-        ? periodTransactions
-        : periodTransactions.filter(transaction => transaction.type === typeFilter);
+    const visibleTransactions = periodTransactions
+        .filter(transaction => typeFilter === 'all' || transaction.type === typeFilter)
+        .sort(sortComparators[sortOrder]);
 
     let incomeTotal = 0;
     let expenseTotal = 0;
@@ -74,16 +88,21 @@ const TransactionList = () => {
     }
     const netTotal = roundCents(incomeTotal - expenseTotal);
 
-    // visibleTransactions is sorted by date, so each day's transactions are already adjacent
-    const dateGroups = [];
-    for (const transaction of visibleTransactions) {
-        const lastGroup = dateGroups[dateGroups.length - 1];
+    // Amount sorts can't keep days together, so they show a flat list with the date on each row instead
+    const groupByDate = sortOrder === 'newest' || sortOrder === 'oldest';
 
-        if (lastGroup?.date === transaction.date) {
-            lastGroup.transactions.push(transaction);
-        }
-        else {
-            dateGroups.push({ date: transaction.date, transactions: [transaction] });
+    // With a date sort, each day's transactions are already adjacent
+    const dateGroups = [];
+    if (groupByDate) {
+        for (const transaction of visibleTransactions) {
+            const lastGroup = dateGroups[dateGroups.length - 1];
+
+            if (lastGroup?.date === transaction.date) {
+                lastGroup.transactions.push(transaction);
+            }
+            else {
+                dateGroups.push({ date: transaction.date, transactions: [transaction] });
+            }
         }
     }
 
@@ -146,7 +165,7 @@ const TransactionList = () => {
                 <div className="filter-options">
                     <form className="date-period">
                         <div className='month-dropdown'>
-                            <label htmlFor="month-filter">Month: </label>
+                            <label htmlFor="month-filter">Month</label>
                             <select id="month-filter" value={dropdownMonth} onChange={(event) => setDropdownMonth(event.target.value)}>
                                 <option value="">Any</option>
                                 {months.map(month => (
@@ -155,10 +174,18 @@ const TransactionList = () => {
                             </select>
                         </div>
                         <div className='year-dropdown'>
-                            <label htmlFor="year-filter">Year: </label>
+                            <label htmlFor="year-filter">Year</label>
                             <select id="year-filter" value={dropdownYear} onChange={(event) => setDropdownYear(event.target.value)}>
                                 {years.map(year => (
                                     <option key={year} value={year}>{year}</option>
+                                ))}
+                            </select>
+                        </div>
+                        <div className='sort-dropdown'>
+                            <label htmlFor="sort-order">Sort</label>
+                            <select id="sort-order" value={sortOrder} onChange={(event) => setSortOrder(event.target.value)}>
+                                {sortOptions.map(option => (
+                                    <option key={option.value} value={option.value}>{option.label}</option>
                                 ))}
                             </select>
                         </div>
@@ -185,8 +212,12 @@ const TransactionList = () => {
 
                 <ul>
                     {
-                        dateGroups.length === 0
+                        visibleTransactions.length === 0
                         ? <li className="no-transactions">No transactions found</li>
+                        : !groupByDate
+                        ? visibleTransactions.map(transaction => (
+                            <Transaction key={transaction.id} transaction={transaction} onDelete={() => removeTransaction(transaction)} showDate />
+                        ))
                         : dateGroups.map(group => {
                             const dayNet = netOf(group.transactions);
 

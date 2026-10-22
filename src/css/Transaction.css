@@ -72,6 +72,11 @@
     white-space: nowrap;
 }
 
+.transaction-date {
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+
 .edit-transaction,
 .duplicate-transaction,
 .delete-transaction {
