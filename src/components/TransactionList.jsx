@@ -216,7 +216,7 @@ const TransactionList = () => {
                         ? <li className="no-transactions">No transactions found</li>
                         : !groupByDate
                         ? visibleTransactions.map(transaction => (
-                            <Transaction key={transaction.id} transaction={transaction} onDelete={() => removeTransaction(transaction)} showDate />
+                            <Transaction key={transaction.id} transaction={transaction} onDelete={() => removeTransaction(transaction)} onCategoryClick={setSearchTerm} showDate />
                         ))
                         : dateGroups.map(group => {
                             const dayNet = netOf(group.transactions);
@@ -229,7 +229,7 @@ const TransactionList = () => {
                                     </div>
                                     <ul>
                                         {group.transactions.map(transaction => (
-                                            <Transaction key={transaction.id} transaction={transaction} onDelete={() => removeTransaction(transaction)} />
+                                            <Transaction key={transaction.id} transaction={transaction} onDelete={() => removeTransaction(transaction)} onCategoryClick={setSearchTerm} />
                                         ))}
                                     </ul>
                                 </li>

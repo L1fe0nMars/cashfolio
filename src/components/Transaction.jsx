@@ -5,7 +5,7 @@ import formatAmount from '../utils/formatAmount';
 import formatDate from '../utils/formatDate';
 import '../css/Transaction.css';
 
-const Transaction = ({ transaction, onDelete, showDate }) => {
+const Transaction = ({ transaction, onDelete, onCategoryClick, showDate }) => {
     const { data } = useContext(SaveDataContext);
     const [showOptions, setShowOptions] = useState(false);
     const [editTransaction, setEditTransaction] = useState(false);
@@ -22,13 +22,22 @@ const Transaction = ({ transaction, onDelete, showDate }) => {
                     <span className="name">{transaction.name}</span>
                     <span className="desc">{transaction.desc}</span>
                     {transaction.category && (
-                        <span className="category">
+                        <button
+                            type="button"
+                            className="category"
+                            onClick={(event) => {
+                                event.stopPropagation();
+                                onCategoryClick(transaction.category);
+                            }}
+                            title={`Search for ${transaction.category}`}
+                            aria-label={`Search for ${transaction.category}`}
+                        >
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
                                 <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
                                 <line x1="7" y1="7" x2="7.01" y2="7"/>
                             </svg>
                             {transaction.category}
-                        </span>
+                        </button>
                     )}
                 </div>
                 <div className="transaction-info-right">

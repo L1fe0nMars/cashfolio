@@ -45,8 +45,17 @@
     font-weight: 500;
     color: var(--text-muted);
     background-color: var(--chip);
+    border: none;
     border-radius: 999px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: color 0.15s ease-in-out;
 }
+
+    .category:hover,
+    .category:focus-visible {
+        color: var(--text);
+    }
 
     .category svg {
         width: 1em;
