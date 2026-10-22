@@ -1,4 +1,4 @@
-import { SaveDataProvider } from './context/SaveDataContext';
+import SaveDataProvider from './context/SaveDataProvider';
 import AppHeader from './components/AppHeader';
 import TransactionList from './components/TransactionList';
 import Footer from './components/Footer';

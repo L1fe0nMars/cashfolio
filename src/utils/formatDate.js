@@ -1,3 +1,6 @@
+const weekdayFormat = new Intl.DateTimeFormat('en-US', { weekday: 'short' });
+const monthFormat = new Intl.DateTimeFormat('en-US', { month: 'short' });
+
 // Omits the year because the transaction list is always filtered to a single year
 const formatDate = (dateString, dateFormat) => {
     const date = new Date(dateString.replace(/-/g, '/'));
@@ -12,8 +15,8 @@ const formatDate = (dateString, dateFormat) => {
         return 'Yesterday';
     }
     else {
-        const weekday = date.toLocaleString('en-US', { weekday: 'short' });
-        const month = date.toLocaleString('en-US', { month: 'short' });
+        const weekday = weekdayFormat.format(date);
+        const month = monthFormat.format(date);
         return dateFormat === 'dd/mm' ? `${weekday}, ${date.getDate()} ${month}` : `${weekday}, ${month} ${date.getDate()}`;
     }
 }

@@ -1,14 +1,6 @@
-import { createContext, useReducer, useEffect } from 'react';
+import { useReducer, useEffect } from 'react';
+import { SaveDataContext, initialData } from './SaveDataContext';
 import SaveDataReducer from './SaveDataReducer';
-
-const initialData = {
-    transactions: [],
-    darkMode: false,
-    currency: '$',
-    dateFormat: 'mm/dd'
-}
-
-export const SaveDataContext = createContext(initialData);
 
 const loadData = () => {
     try {
@@ -27,7 +19,7 @@ const loadData = () => {
     }
 }
 
-export const SaveDataProvider = ({ children }) => {
+const SaveDataProvider = ({ children }) => {
     const [data, dispatch] = useReducer(SaveDataReducer, null, loadData);
 
     useEffect(() => {
@@ -63,7 +55,7 @@ export const SaveDataProvider = ({ children }) => {
     }
 
     return (
-        <SaveDataContext.Provider value={{ 
+        <SaveDataContext value={{
             data,
             saveData,
             deleteTransaction,
@@ -71,6 +63,8 @@ export const SaveDataProvider = ({ children }) => {
             updateTransaction
         }}>
             {children}
-        </SaveDataContext.Provider>
+        </SaveDataContext>
     );
 }
+
+export default SaveDataProvider;

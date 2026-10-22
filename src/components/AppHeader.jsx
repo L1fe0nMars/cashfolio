@@ -41,31 +41,27 @@ const AppHeader = () => {
         URL.revokeObjectURL(url);
     };
 
-    const importData = (event) => {
-        const file = event.target.files?.[0];
+    const importData = async (event) => {
+        const input = event.target;
+        const file = input.files?.[0];
         if (!file) return;
 
-        const reader = new FileReader();
-        reader.onload = () => {
-            try {
-                const importedData = JSON.parse(reader.result);
+        try {
+            const importedData = JSON.parse(await file.text());
 
-                if (!isValidBackup(importedData)) {
-                    throw new Error('Invalid backup');
-                }
-
-                if (data.transactions.length === 0 || confirm('Importing will replace all of your current transactions. Continue?')) {
-                    const { transactions, currency, dateFormat } = importedData;
-                    saveData({ transactions, currency, dateFormat });
-                }
-            } catch {
-                alert('Please select a valid CashFolio backup file.');
+            if (!isValidBackup(importedData)) {
+                throw new Error('Invalid backup');
             }
 
-            event.target.value = '';
-        };
+            if (data.transactions.length === 0 || confirm('Importing will replace all of your current transactions. Continue?')) {
+                const { transactions, currency, dateFormat } = importedData;
+                saveData({ transactions, currency, dateFormat });
+            }
+        } catch {
+            alert('Please select a valid CashFolio backup file.');
+        }
 
-        reader.readAsText(file);
+        input.value = '';
     }
     
     return (

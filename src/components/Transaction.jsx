@@ -10,10 +10,6 @@ const Transaction = ({ transaction, onDelete }) => {
     const [editTransaction, setEditTransaction] = useState(false);
     const { currency } = data;
 
-    const toggleEditTransaction = (display) => {
-        setEditTransaction(display);
-    }
-
     const onClickTransaction = () => {
         if (!editTransaction) {
             setShowOptions(!showOptions);
@@ -22,7 +18,7 @@ const Transaction = ({ transaction, onDelete }) => {
 
     return (
         <li className="transaction" onClick={onClickTransaction}>
-            {editTransaction && <AddTransaction closeNewTransaction={() => toggleEditTransaction(false)} transaction={transaction} update={true} />}
+            {editTransaction && <AddTransaction closeNewTransaction={() => setEditTransaction(false)} transaction={transaction} />}
 
             <div className="transaction-entry">
                 <div className="transaction-info">
@@ -41,7 +37,8 @@ const Transaction = ({ transaction, onDelete }) => {
                 <div className="transaction-info-right">
                     <span className={`amount ${transaction.type}`}>
                         {formatAmount(transaction.type === 'expense' ? -transaction.amount : transaction.amount, currency, true)}
-                    </span>                </div>
+                    </span>
+                </div>
             </div>
             {showOptions && <>
                 <button className="edit-transaction" onClick={() => setEditTransaction(true)} title="Edit transaction" aria-label="Edit transaction">

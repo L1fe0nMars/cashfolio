@@ -59,7 +59,7 @@ Vite does not lint during dev or build. Files containing JSX must use the `.jsx`
 - **src/main.jsx** - Mounts `App` in `StrictMode` and imports global styles
 - **src/App.jsx** - App shell: wraps `AppHeader`, `TransactionList`, and `Footer` in `SaveDataProvider`
 - **src/components/** - One `.jsx` file per UI component
-- **src/context/** - `SaveDataContext.jsx` (provider and action helpers) and `SaveDataReducer.jsx`
+- **src/context/** - `SaveDataContext.js` (the context and `initialData`), `SaveDataProvider.jsx` (provider and action helpers), and `SaveDataReducer.js`. The context lives in its own file so Fast Refresh works on the provider.
 - **src/css/** - One stylesheet per component, plus `index.css` for global styles, color variables, and `@font-face` rules
 - **src/utils/** - Plain JS helpers shared across components (`formatAmount.js`, `formatDate.js`)
 - **src/assets/** - SVG images and the Inter font files
@@ -68,15 +68,15 @@ Vite does not lint during dev or build. Files containing JSX must use the `.jsx`
 ### Key Architectural Patterns
 
 **Save Data:**
-- `SaveDataContext` holds a single `data` object in a `useReducer` and writes it to `localStorage['data']` on every change: `{ transactions: [], darkMode: false, currency: '$', dateFormat: 'mm/dd' }`.
+- `SaveDataProvider` holds a single `data` object in a `useReducer` and writes it to `localStorage['data']` on every change: `{ transactions: [], darkMode: false, currency: '$', dateFormat: 'mm/dd' }`.
 - On load, saved data replaces `initialData` entirely (unreadable saved data falls back to `initialData`). Unlike a backfill, keys added to `initialData` later will be missing for users who already have saved data, so any new key needs a fallback where it is read (or a backfill added to the provider).
 - Action helpers from the context: `addTransaction` (prepends), `updateTransaction` (merges by `id`), `deleteTransaction` (by `id`), and `saveData(partial)`, which shallow-merges into `data`.
 
 **Transactions:**
 - Shape: `{ id: crypto.randomUUID(), type: 'income' | 'expense', name, desc, category, date: 'YYYY-MM-DD', amount }`. `amount` is always stored as a positive number, and its sign comes from `type`.
-- Dates are stored as `YYYY-MM-DD` strings. Month and year filtering match substrings like `` `${year}-${month}` ``. When parsing, the code replaces `-` with `/` so `new Date()` treats the date as local time rather than UTC.
-- `AddTransaction.jsx` handles both creating and editing. Passing `transaction` and `update` switches it to edit mode. The date input allows 2024-01-01 through today.
-- `DeleteAllTransactions.jsx` asks for confirmation, then calls `deleteTransaction` for each transaction.
+- Dates are stored as `YYYY-MM-DD` strings. Month and year filtering match prefixes like `` `${year}-${month}` ``. When parsing, the code replaces `-` with `/` so `new Date()` treats the date as local time rather than UTC.
+- `AddTransaction.jsx` handles both creating and editing. Passing a `transaction` switches it to edit mode. The date input allows 2024-01-01 through today.
+- `DeleteAllTransactions.jsx` asks for confirmation, then clears the list with `saveData({ transactions: [] })`.
 
 **Transaction List:**
 - `TransactionList.jsx` owns all view logic: the type segmented control (all, income, expense), month and year dropdowns, search across name, description, and category, the income/expense/net totals, whether the add modal is open, and the undo toast for single deletes. Filter state is local and not persisted.
@@ -91,7 +91,7 @@ Vite does not lint during dev or build. Files containing JSX must use the `.jsx`
 - `TransactionList.jsx` groups rows under sticky date headers that show the day's net. Headers use `formatDate` with `dateFormat` (`mm/dd` shows "Sat, Oct 18", `dd/mm` shows "Sat, 18 Oct", with "Today" and "Yesterday" for recent dates). Rows themselves show no date. A label under the total names the period and any active search.
 - Amounts are displayed through `formatAmount` (thousands separators, optional +/- sign).
 - The app is always dark: colors are semantic tokens in `src/css/index.css` (`--bg`, `--surface`, `--surface-raised`, `--text`, `--text-muted`, `--border`, etc.) with `color-scheme: dark`. Use the tokens rather than raw colors. `arrow-down.svg` is a CSS background, so its fill is hardcoded to match `--text`.
-- `darkMode` is stored but nothing uses it (there is no theme toggle). `Settings.jsx` is an unfinished stub: no component renders it, and it imports `src/css/Settings.css`, which does not exist yet.
+- `darkMode` is stored but nothing uses it (there is no theme toggle). There is no settings UI yet, so `currency` and `dateFormat` always keep their defaults unless changed by an import.
 
 ## Collaboration Rules
 
@@ -116,7 +116,7 @@ Vite does not lint during dev or build. Files containing JSX must use the `.jsx`
 ## Data and Persistence
 
 - All persisted state goes through `SaveDataContext`. Do not read or write `localStorage` directly from components.
-- Renaming or removing a key in the save data, or changing the transaction shape, affects existing users' saved data and their exported backups. Treat these changes as needing approval. Import does not support older backup formats. Instead, `SaveDataContext` upgrades saved data on load (currently: numeric transaction ids get a UUID) so exports always match the current format.
+- Renaming or removing a key in the save data, or changing the transaction shape, affects existing users' saved data and their exported backups. Treat these changes as needing approval. Import does not support older backup formats. Instead, `SaveDataProvider` upgrades saved data on load (currently: numeric transaction ids get a UUID) so exports always match the current format.
 - The footer warns users not to enter sensitive information. Data never leaves the browser except through a user-initiated export, so do not add network requests, analytics, or third-party scripts without approval.
 
 ## Simplicity and Efficiency

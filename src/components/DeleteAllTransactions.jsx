@@ -3,12 +3,12 @@ import { SaveDataContext } from '../context/SaveDataContext';
 import '../css/DeleteAllTransactions.css';
 
 const DeleteAllTransactions = () => {
-    const { data, deleteTransaction } = useContext(SaveDataContext);
+    const { data, saveData } = useContext(SaveDataContext);
     const [showConfirmation, setShowConfirmation] = useState(false);
     const { transactions } = data;
 
     const deleteAll = () => {
-        transactions.map(transaction => deleteTransaction(transaction.id));
+        saveData({ transactions: [] });
         setShowConfirmation(false);
     }
 
@@ -17,7 +17,7 @@ const DeleteAllTransactions = () => {
             {
                 transactions.length > 0
                 && !showConfirmation
-                && <button className="delete-all-btn" onClick={() => setShowConfirmation(!showConfirmation)}>Delete All Transactions</button>
+                && <button className="delete-all-btn" onClick={() => setShowConfirmation(true)}>Delete All Transactions</button>
             }
 
             {showConfirmation && <div className="delete-confirm">

@@ -18,9 +18,11 @@ const typeOptions = [
     { value: 'expense', label: 'Expenses' }
 ];
 
-const netOf = (transactions) => Math.round(transactions.reduce((total, transaction) => {
+const roundCents = (amount) => Math.round(amount * 100) / 100;
+
+const netOf = (transactions) => roundCents(transactions.reduce((total, transaction) => {
     return transaction.type === 'income' ? total + transaction.amount : total - transaction.amount;
-}, 0) * 100) / 100;
+}, 0));
 
 const amountClass = (amount) => amount > 0 ? 'income' : (amount < 0 ? 'expense' : '');
 
@@ -51,7 +53,7 @@ const TransactionList = () => {
 
     const search = searchTerm.trim().toLowerCase();
     const periodTransactions = transactions
-        .filter(transaction => transaction.date.includes(`${dropdownYear}-${dropdownMonth}`))
+        .filter(transaction => transaction.date.startsWith(`${dropdownYear}-${dropdownMonth}`))
         .filter(transaction => [transaction.name, transaction.desc, transaction.category]
             .some(field => (field || '').toLowerCase().includes(search)))
         .sort((a, b) => b.date.localeCompare(a.date));
@@ -60,13 +62,17 @@ const TransactionList = () => {
         ? periodTransactions
         : periodTransactions.filter(transaction => transaction.type === typeFilter);
 
-    const sumOf = (type) => periodTransactions
-        .filter(transaction => transaction.type === type)
-        .reduce((total, transaction) => total + transaction.amount, 0);
-
-    const incomeTotal = sumOf('income');
-    const expenseTotal = sumOf('expense');
-    const netTotal = netOf(periodTransactions);
+    let incomeTotal = 0;
+    let expenseTotal = 0;
+    for (const transaction of periodTransactions) {
+        if (transaction.type === 'income') {
+            incomeTotal += transaction.amount;
+        }
+        else {
+            expenseTotal += transaction.amount;
+        }
+    }
+    const netTotal = roundCents(incomeTotal - expenseTotal);
 
     // visibleTransactions is sorted by date, so each day's transactions are already adjacent
     const dateGroups = [];
@@ -140,8 +146,8 @@ const TransactionList = () => {
                 <div className="filter-options">
                     <form className="date-period">
                         <div className='month-dropdown'>
-                            <label>Month: </label>
-                            <select value={dropdownMonth} onChange={(event) => setDropdownMonth(event.target.value)}>
+                            <label htmlFor="month-filter">Month: </label>
+                            <select id="month-filter" value={dropdownMonth} onChange={(event) => setDropdownMonth(event.target.value)}>
                                 <option value="">Any</option>
                                 {months.map(month => (
                                     <option key={month.value} value={month.value}>{month.name}</option>
@@ -149,8 +155,8 @@ const TransactionList = () => {
                             </select>
                         </div>
                         <div className='year-dropdown'>
-                            <label>Year: </label>
-                            <select value={dropdownYear} onChange={(event) => setDropdownYear(event.target.value)}>
+                            <label htmlFor="year-filter">Year: </label>
+                            <select id="year-filter" value={dropdownYear} onChange={(event) => setDropdownYear(event.target.value)}>
                                 {years.map(year => (
                                     <option key={year} value={year}>{year}</option>
                                 ))}

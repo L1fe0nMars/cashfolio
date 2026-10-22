@@ -2,12 +2,10 @@ import { useState, useContext, useEffect, useEffectEvent, useRef } from 'react';
 import { SaveDataContext } from '../context/SaveDataContext';
 import '../css/AddTransaction.css';
 
-const AddTransaction = ({ transaction, update, closeNewTransaction }) => {
+const AddTransaction = ({ transaction, closeNewTransaction }) => {
+    const update = Boolean(transaction);
     const today = new Date();
-    const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-    const formattedDate = today.toLocaleDateString('en-US', options);
-    const [mm, dd, yyyy] = formattedDate.split('/');
-    const todaysDate = `${yyyy}-${mm}-${dd}`;
+    const todaysDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
 
     const [name, setName] = useState(transaction?.name || '');
     const [desc, setDesc] = useState(transaction?.desc || '');
