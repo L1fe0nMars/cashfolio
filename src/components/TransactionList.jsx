@@ -53,6 +53,7 @@ const TransactionList = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [newTransaction, setNewTransaction] = useState(false);
     const [deletedTransaction, setDeletedTransaction] = useState(null);
+    const [selectedId, setSelectedId] = useState(null);
     const searchInput = useRef(null);
 
     useEffect(() => {
@@ -61,6 +62,18 @@ const TransactionList = () => {
         const timeout = setTimeout(() => setDeletedTransaction(null), 5000);
         return () => clearTimeout(timeout);
     }, [deletedTransaction]);
+
+    // Clicks inside rows are skipped because rows toggle themselves, and closing here too would undo switching to another row
+    useEffect(() => {
+        if (!selectedId) return;
+
+        const closeOptions = (event) => {
+            if (!event.target.closest('.transaction')) setSelectedId(null);
+        };
+
+        document.addEventListener('click', closeOptions);
+        return () => document.removeEventListener('click', closeOptions);
+    }, [selectedId]);
 
     // The selected year stays listed even if its last transaction is deleted, so the dropdown never shows a value it doesn't have
     const years = [...new Set([currentYear, dropdownYear, ...transactions.map(transaction => transaction.date.split('-')[0])])]
@@ -114,7 +127,20 @@ const TransactionList = () => {
     const removeTransaction = (transaction) => {
         deleteTransaction(transaction.id);
         setDeletedTransaction(transaction);
+        setSelectedId(null);
     }
+
+    const renderTransaction = (transaction, showDate) => (
+        <Transaction
+            key={transaction.id}
+            transaction={transaction}
+            showOptions={selectedId === transaction.id}
+            onToggleOptions={() => setSelectedId(selectedId === transaction.id ? null : transaction.id)}
+            onDelete={() => removeTransaction(transaction)}
+            onCategoryClick={setSearchTerm}
+            showDate={showDate}
+        />
+    );
 
     const clearSearch = () => {
         setSearchTerm('');
@@ -215,9 +241,7 @@ const TransactionList = () => {
                         visibleTransactions.length === 0
                         ? <li className="no-transactions">No transactions found</li>
                         : !groupByDate
-                        ? visibleTransactions.map(transaction => (
-                            <Transaction key={transaction.id} transaction={transaction} onDelete={() => removeTransaction(transaction)} onCategoryClick={setSearchTerm} showDate />
-                        ))
+                        ? visibleTransactions.map(transaction => renderTransaction(transaction, true))
                         : dateGroups.map(group => {
                             const dayNet = netOf(group.transactions);
 
@@ -228,9 +252,7 @@ const TransactionList = () => {
                                         <span className={amountClass(dayNet)}>{formatAmount(dayNet, currency, true)}</span>
                                     </div>
                                     <ul>
-                                        {group.transactions.map(transaction => (
-                                            <Transaction key={transaction.id} transaction={transaction} onDelete={() => removeTransaction(transaction)} onCategoryClick={setSearchTerm} />
-                                        ))}
+                                        {group.transactions.map(transaction => renderTransaction(transaction, false))}
                                     </ul>
                                 </li>
                             );

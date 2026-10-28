@@ -86,10 +86,16 @@
     white-space: nowrap;
 }
 
+.transaction-actions {
+    margin-left: 1em;
+    display: flex;
+    gap: 0.5em;
+    border-radius: inherit;
+}
+
 .edit-transaction,
 .duplicate-transaction,
 .delete-transaction {
-    margin-left: 1em;
     padding: 0.5em;
     border: none;
     border-radius: inherit;
